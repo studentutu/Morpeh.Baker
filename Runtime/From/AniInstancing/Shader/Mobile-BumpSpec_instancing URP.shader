@@ -212,7 +212,7 @@ Shader "AnimationInstancing/Mobile URP Animation instancing"
 
 				float4 positionCS               : SV_POSITION;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
-				UNITY_VERTEX_OUTPUT_STEREO
+				// UNITY_VERTEX_OUTPUT_STEREO // for VR
 			};
 
 			void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData)
@@ -267,7 +267,7 @@ Shader "AnimationInstancing/Mobile URP Animation instancing"
 
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_TRANSFER_INSTANCE_ID(input, output);
-				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+				// UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output); // for VR
 
 				ani_instance_data aniInstanceData = (ani_instance_data)0;
 				aniInstanceData.vertex = input.positionOS;
@@ -316,7 +316,7 @@ Shader "AnimationInstancing/Mobile URP Animation instancing"
 			half4 LitPassFragmentSimple(Varyings input) : SV_Target
 			{
 				UNITY_SETUP_INSTANCE_ID(input);
-				UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+				// UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input); // For VR
 
 				float2 uv = input.uv;
 				half4 diffuseAlpha = SampleAlbedoAlpha(uv, TEXTURE2D_ARGS(_BaseMap, sampler_BaseMap));
