@@ -72,7 +72,7 @@ namespace AnimationInstancing
         // all object used animation instancing
         List<AnimationInstancing> aniInstancingList;
         // to calculate lod level
-        private Transform cameraTransform; 
+        private Transform cameraTransform;
         private Dictionary<int, VertexCache> vertexCachePool;
         private Dictionary<int, InstanceData> instanceDataPool;
         const int InstancingSizePerPackage = 200;
@@ -113,14 +113,10 @@ namespace AnimationInstancing
                 UseInstancing = false;
             }
 
-			vertexCachePool = new Dictionary<int, VertexCache>();
-			instanceDataPool = new Dictionary<int, InstanceData>();
+            vertexCachePool = new Dictionary<int, VertexCache>();
+            instanceDataPool = new Dictionary<int, InstanceData>();
         }
 
-        private void Start()
-        {
-            
-        }
 
         private void InitializeCullingGroup()
         {
@@ -155,7 +151,7 @@ namespace AnimationInstancing
                                 continue;
                             for (int j = 0; j != package.subMeshCount; ++j)
                             {
-                                InstanceData data = block.Value.instanceData; 
+                                InstanceData data = block.Value.instanceData;
                                 if (useInstancing)
                                 {
 #if UNITY_EDITOR
@@ -193,24 +189,24 @@ namespace AnimationInstancing
                     }
                 }
 
-//                 if (obj.Value.instancingData == null)
-//                     continue;
-//                 vertexCache.bufInstance.SetData(obj.Value.instancingData);
-// 
-//                 for (int i = 0; i != vertexCache.subMeshCount; ++i)
-//                 {
-//                     Material material = vertexCache.instanceMaterial[i];
-//                     material.SetBuffer("buf_InstanceMatrices", vertexCache.bufInstance);
-//                     vertexCache.args[i][1] = (uint)vertexCache.currentInstancingIndex;
-//                     vertexCache.bufArgs[i].SetData(vertexCache.args[i]);
-// 
-//                     Graphics.DrawMeshInstancedIndirect(vertexCache.mesh,
-//                                     i,
-//                                     vertexCache.instanceMaterial[i],
-//                                     new Bounds(Vector3.zero, new Vector3(10000.0f, 10000.0f, 10000.0f)),
-//                                     vertexCache.bufArgs[i]);
-//                 }
-//                 vertexCache.currentInstancingIndex = 0;
+                //                 if (obj.Value.instancingData == null)
+                //                     continue;
+                //                 vertexCache.bufInstance.SetData(obj.Value.instancingData);
+                // 
+                //                 for (int i = 0; i != vertexCache.subMeshCount; ++i)
+                //                 {
+                //                     Material material = vertexCache.instanceMaterial[i];
+                //                     material.SetBuffer("buf_InstanceMatrices", vertexCache.bufInstance);
+                //                     vertexCache.args[i][1] = (uint)vertexCache.currentInstancingIndex;
+                //                     vertexCache.bufArgs[i].SetData(vertexCache.args[i]);
+                // 
+                //                     Graphics.DrawMeshInstancedIndirect(vertexCache.mesh,
+                //                                     i,
+                //                                     vertexCache.instanceMaterial[i],
+                //                                     new Bounds(Vector3.zero, new Vector3(10000.0f, 10000.0f, 10000.0f)),
+                //                                     vertexCache.bufArgs[i]);
+                //                 }
+                //                 vertexCache.currentInstancingIndex = 0;
             }
         }
 
@@ -310,10 +306,10 @@ namespace AnimationInstancing
                         }
                     }
                 }
-                
+
             }
         }
-       
+
         void ApplyBoneMatrix()
         {
             Vector3 cameraPosition = cameraTransform.position;
@@ -603,8 +599,8 @@ namespace AnimationInstancing
                 data.frameIndex[i] = new List<float[]>();
                 data.preFrameIndex[i] = new List<float[]>();
                 data.transitionProgress[i] = new List<float[]>();
-            }   
-            return data;    
+            }
+            return data;
         }
 
 
@@ -662,7 +658,7 @@ namespace AnimationInstancing
                     int identify = GetIdentify(lod.meshRenderer[i].sharedMaterials);
                     VertexCache cache = null;
                     if (vertexCachePool.TryGetValue(renderName + aliasName, out cache))
-                    { 
+                    {
                         MaterialBlock block = null;
                         if (!cache.instanceBlockList.TryGetValue(identify, out block))
                         {
@@ -703,16 +699,16 @@ namespace AnimationInstancing
         {
             MaterialBlock block = new MaterialBlock();
             int packageCount = GetPackageCount(cache);
-            block.instanceData = CreateInstanceData(packageCount);                             
+            block.instanceData = CreateInstanceData(packageCount);
             block.packageList = new List<InstancingPackage>[packageCount];
             for (int i = 0; i != block.packageList.Length; ++i)
             {
-               block.packageList[i] = new List<InstancingPackage>();
+                block.packageList[i] = new List<InstancingPackage>();
 
-               InstancingPackage package = CreatePackage(block.instanceData, 
-                    cache.mesh,
-                    materials, 
-                    i);
+                InstancingPackage package = CreatePackage(block.instanceData,
+                     cache.mesh,
+                     materials,
+                     i);
                 block.packageList[i].Add(package);
                 PreparePackageMaterial(package, cache, i);
                 package.instancingCount = 1;
@@ -886,7 +882,7 @@ namespace AnimationInstancing
 
         public void SetupAdditionalData(VertexCache vertexCache)
         {
-            Color[] colors = new Color[vertexCache.weight.Length];            
+            Color[] colors = new Color[vertexCache.weight.Length];
             for (int i = 0; i != colors.Length; ++i)
             {
                 colors[i].r = vertexCache.weight[i].x;
@@ -909,7 +905,7 @@ namespace AnimationInstancing
         {
             if (vertexCache.boneTextureIndex < 0)
                 return;
-                
+
             for (int i = 0; i != package.subMeshCount; ++i)
             {
                 AnimationTexture texture = animationTextureList[vertexCache.boneTextureIndex];
