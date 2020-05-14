@@ -82,14 +82,14 @@ namespace FSG.MeshAnimator
                 MeshAnimator animator = mAnimators[i];
                 if (time >= animator.nextTick)
                 {
-                    try
-                    {
-                        animator.UpdateTick(time);
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Debug.LogException(ex);
-                    }
+                    // try
+                    // {
+                    animator.UpdateTick(time);
+                    // }
+                    // catch (System.Exception ex)
+                    // {
+                    // Debug.LogException(ex);
+                    // }
                 }
             }
         }
