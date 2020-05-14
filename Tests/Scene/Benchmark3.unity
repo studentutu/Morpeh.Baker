@@ -214,6 +214,87 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &90717124
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &90717125 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 90717124}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &93387249
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +372,249 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93387249}
   m_CullTransparentMesh: 0
+--- !u!1001 &164098914
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (7)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &164098915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 164098914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &225001634
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (11)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &225001635 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 225001634}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &395853547
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (8)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &395853548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 395853547}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &464522118
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +675,87 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &518138891
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -17.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (6)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &518138892 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 518138891}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &739754978
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +806,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 120
+  far clip plane: 400
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -428,12 +833,498 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739754978}
   m_LocalRotation: {x: 0.3694821, y: -0, z: -0, w: 0.92923784}
-  m_LocalPosition: {x: 0, y: 28.85, z: -27.91}
+  m_LocalPosition: {x: 0, y: 62.8, z: -63.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 43.367, y: 0, z: 0}
+--- !u!1001 &899563317
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &899563318 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 899563317}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1219902287
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (5)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &1219902288 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 1219902287}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1242258025
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (9)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &1242258026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 1242258025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1321512465
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (10)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &1321512466 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 1321512465}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1436145181
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 19.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &1436145182 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 1436145181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &1444259020
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384730, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038634160354384731, guid: d119c7afc62d2c441943277e22009576,
+        type: 3}
+      propertyPath: m_Name
+      value: Horde Mesh Animator (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d119c7afc62d2c441943277e22009576, type: 3}
+--- !u!114 &1444259021 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 1444259020}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1916137227
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +1424,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2643704097103536245, guid: 51c81d47f7f9212498057a352ae3969d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2643704097614637954, guid: 51c81d47f7f9212498057a352ae3969d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -643,8 +1539,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneChange
       objectReference: {fileID: 0}
+    - target: {fileID: 2643704097771447701, guid: 51c81d47f7f9212498057a352ae3969d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51c81d47f7f9212498057a352ae3969d, type: 3}
+--- !u!114 &526409639837033529 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6038634160354384729, guid: d119c7afc62d2c441943277e22009576,
+    type: 3}
+  m_PrefabInstance: {fileID: 6089894744352472928}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80bde1c4056cca4e9b098d7a59768eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1328996687203162953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -666,62 +1579,62 @@ PrefabInstance:
         type: 3}
       propertyPath: allHordes.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 526409639837033529}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 90717125}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1436145182}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 899563318}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1444259021}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[5]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1219902288}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[6]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 518138892}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[7]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 164098915}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[8]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 395853548}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[9]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1242258026}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[10]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1321512466}
     - target: {fileID: 1328996687013003792, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: allHordes.Array.data[11]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 225001635}
     - target: {fileID: 1328996687013003793, guid: 665de1bb25121b941a4f8e5a138cb414,
         type: 3}
       propertyPath: m_LocalPosition.x
