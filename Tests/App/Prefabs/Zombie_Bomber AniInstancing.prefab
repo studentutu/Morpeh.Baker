@@ -763,7 +763,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a74066172cf19cd4bacae3c6600a7217, type: 2}
+  - {fileID: 2100000, guid: ceb3dfc855e46d8419442b91077b4603, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1131,7 +1131,7 @@ MonoBehaviour:
   playSpeed: 1
   shadowCastingMode: 1
   receiveShadow: 1
-  applyRootMotion: 1
+  applyRootMotion: 0
   bonePerVertex: 2
 --- !u!1 &7863646811927248566
 GameObject:
