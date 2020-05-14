@@ -1,6 +1,5 @@
 namespace GBG.Rush.AniInstancing.Scripts
 {
-    using GBG.Rush.Utils.Pool;
     using Morpeh;
     using UnityEngine;
     using UnityEngine.Profiling;
@@ -15,7 +14,6 @@ namespace GBG.Rush.AniInstancing.Scripts
         {
             this.animationInstances = this.World.Filter
                                             .With<AnimationInstancingComponent>()
-                                            .Without<DisabledInPool>()
                                             .Without<StopAnimationMarker>();
         }
 
