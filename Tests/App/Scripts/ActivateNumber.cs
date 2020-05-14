@@ -7,12 +7,12 @@ public class ActivateNumber : MonoBehaviour
     [SerializeField] private List<HordeController> allHordes = new List<HordeController>();
     [SerializeField] private UnityEngine.UI.Slider slider = null;
     [SerializeField] private UnityEngine.UI.Text numberDisplay = null;
-    private int allNumber = 500;
+    private int allNumber = 0;
     private void Awake()
     {
         slider.onValueChanged.AddListener(ChangeNumber);
         // ChangeNumber(300);
-        slider.value = 300;
+        slider.value = 100;
     }
 
     private void ChangeNumber(float value)
