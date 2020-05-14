@@ -700,6 +700,9 @@ namespace AnimationInstancing
 
             file.Close();
             aniInfo.Clear();
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private List<AnimationClip> GetClips(bool bakeFromAnimator)

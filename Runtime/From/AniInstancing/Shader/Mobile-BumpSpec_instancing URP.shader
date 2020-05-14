@@ -9,7 +9,7 @@
 // - no Lightmap support
 // - fully supports only 1 directional light. Other lights can affect it, but it will be per-vertex/SH.
 
-Shader "AnimationInstancing/Mobile URP Bumped Specular_instancing" 
+Shader "AnimationInstancing/Mobile URP Animation instancing" 
 {
 	Properties 
 	{
@@ -358,6 +358,8 @@ Shader "AnimationInstancing/Mobile URP Bumped Specular_instancing"
 			#pragma prefer_hlslcc gles
 			#pragma exclude_renderers d3d11_9x
 			#pragma target 2.0
+			#pragma fragmentoption ARB_precision_hint_fastest
+
 
 			// -------------------------------------
 			// Material Keywords
@@ -469,6 +471,8 @@ Shader "AnimationInstancing/Mobile URP Bumped Specular_instancing"
 			#pragma prefer_hlslcc gles
 			#pragma exclude_renderers d3d11_9x
 			#pragma target 2.0
+			#pragma fragmentoption ARB_precision_hint_fastest
+
 
 			#pragma vertex DepthOnlyVertex
 			#pragma fragment DepthOnlyFragment
@@ -549,7 +553,7 @@ Shader "AnimationInstancing/Mobile URP Bumped Specular_instancing"
 			ENDHLSL
 		}
 		
-		// Meta - LighMaps
+		// Meta - LighMaps only used in Editor
 		Pass
 		{
 			Name "Meta"
