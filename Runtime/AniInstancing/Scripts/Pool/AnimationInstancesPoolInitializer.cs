@@ -18,9 +18,9 @@ namespace GBG.Rush.AniInstancing.Scripts
         private Filter pools;
         public override void OnAwake()
         {
-            // Assert.IsNotNull(this.prefabZombie);
-            // Assert.IsNotNull(this.prefabAnimation);
-            // Assert.IsNotNull(this.animationData);
+            Assert.IsNotNull(this.prefabZombie);
+            Assert.IsNotNull(this.prefabAnimation);
+            Assert.IsNotNull(this.animationData);
 
 
             this.World.CreateEntity().SetComponent(new PoolItems
@@ -28,26 +28,23 @@ namespace GBG.Rush.AniInstancing.Scripts
                 items = new Dictionary<EntityProvider, Stack<IEntity>>()
             });
 
-            this.pools = this.World.Filter.With<PoolItems>();
-            ref var poolItems = ref this.pools.First().GetComponent<PoolItems>();
+            // this.pools = this.World.Filter.With<PoolItems>();
+            // ref var poolItems = ref this.pools.First().GetComponent<PoolItems>();
 
-            var position = new Vector3(-1000, -1000, -1000);
-            var baze = new GameObject("Zombies");
-            for (var i = 0; i < this.capacity; ++i)
-            {
+            // var position = new Vector3(-1000, -1000, -1000);
+            // var baze = new GameObject("Zombies");
+            // for (var i = 0; i < this.capacity; ++i)
+            // {
 
-                var entity = poolItems.GetInstance(prefabZombie);
-                ref var zombie = ref entity.GetComponent<Zombie>();
+            //     var entity = poolItems.GetInstance(prefabZombie);
+            //     ref var zombie = ref entity.GetComponent<Zombie>();
 
-                zombie.root.transform.parent = baze.transform;
+            //     zombie.root.transform.parent = baze.transform;
 
-                entity.SetComponent(new AnimationInstancingComponent(
-                    Matrix4x4.TRS(position, Quaternion.Euler(Vector3.zero), Vector3.one), this.prefabAnimation, this.animationData));
-                entity.AddComponent<RecycleToPool>();
-
-
-
-            }
+            //     entity.SetComponent(new AnimationInstancingComponent(
+            //         Matrix4x4.TRS(position, Quaternion.Euler(Vector3.zero), Vector3.one), this.prefabAnimation, this.animationData));
+            //     entity.AddComponent<RecycleToPool>();
+            // }
         }
 
         public override void Dispose()

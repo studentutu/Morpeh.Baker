@@ -1,15 +1,17 @@
-namespace GBG.Rush.AniInstancing.Scripts {
+namespace GBG.Rush.AniInstancing.Scripts
+{
     using System.Collections.Generic;
     using System.IO;
     using UnityEngine;
 
-    public static class AnimationInstancingDataPool {
-        public static readonly Dictionary<int, VertexCache>  vertexCachePool = new Dictionary<int, VertexCache>();
+    public static class AnimationInstancingDataPool
+    {
+        public static readonly Dictionary<int, VertexCache> vertexCachePool = new Dictionary<int, VertexCache>();
         public static readonly Dictionary<int, InstanceData> instanceDataPool = new Dictionary<int, InstanceData>();
         public static readonly List<AnimationTexture> animationTextureList = new List<AnimationTexture>();
-        
+
         public const int INSTANCING_SIZE_PER_PACKAGE = 200;
-        
+
         public static void AddMeshVertex(string prefabName,
             LodInfo[] lodInfo,
             Transform[] bones,
@@ -62,7 +64,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
                     int identify = GetIdentify(lod.meshRenderer[i].sharedMaterials);
                     VertexCache cache = null;
                     if (vertexCachePool.TryGetValue(renderName + aliasName, out cache))
-                    { 
+                    {
                         MaterialBlock block = null;
                         if (!cache.instanceBlockList.TryGetValue(identify, out block))
                         {
@@ -85,7 +87,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 }
             }
         }
-        
+
         public static bool ImportAnimationTexture(string prefabName, BinaryReader reader)
         {
             if (FindTexture_internal(prefabName) >= 0)
@@ -96,7 +98,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
             ReadTexture(reader, prefabName);
             return true;
         }
-        
+
         private static void ReadTexture(BinaryReader reader, string prefabName)
         {
             var format = TextureFormat.RGBAHalf;
@@ -105,23 +107,23 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 //todo
                 format = TextureFormat.RGBA32;
             }
-            int count       = reader.ReadInt32();
-            int blockWidth  = reader.ReadInt32();
+            int count = reader.ReadInt32();
+            int blockWidth = reader.ReadInt32();
             int blockHeight = reader.ReadInt32();
 
             AnimationTexture aniTexture = new AnimationTexture();
             aniTexture.boneTexture = new Texture2D[count];
-            aniTexture.name        = prefabName;
-            aniTexture.blockWidth  = blockWidth;
+            aniTexture.name = prefabName;
+            aniTexture.blockWidth = blockWidth;
             aniTexture.blockHeight = blockHeight;
             animationTextureList.Add(aniTexture);
 
             for (int i = 0; i != count; ++i)
             {
-                int    textureWidth  = reader.ReadInt32();
-                int    textureHeight = reader.ReadInt32();
-                int    byteLength    = reader.ReadInt32();
-                byte[] b             = new byte[byteLength];
+                int textureWidth = reader.ReadInt32();
+                int textureHeight = reader.ReadInt32();
+                int byteLength = reader.ReadInt32();
+                byte[] b = new byte[byteLength];
                 b = reader.ReadBytes(byteLength);
                 Texture2D texture = new Texture2D(textureWidth, textureHeight, format, false);
                 texture.LoadRawTextureData(b);
@@ -140,20 +142,20 @@ namespace GBG.Rush.AniInstancing.Scripts {
             }
             return hash;
         }
-        
+
         private static MaterialBlock CreateBlock(VertexCache cache, Material[] materials)
         {
-            MaterialBlock block        = new MaterialBlock();
-            int           packageCount = GetPackageCount(cache);
-            block.instanceData = CreateInstanceData(packageCount);                             
-            block.packageList  = new List<InstancingPackage>[packageCount];
+            MaterialBlock block = new MaterialBlock();
+            int packageCount = GetPackageCount(cache);
+            block.instanceData = CreateInstanceData(packageCount);
+            block.packageList = new List<InstancingPackage>[packageCount];
             for (int i = 0; i != block.packageList.Length; ++i)
             {
                 block.packageList[i] = new List<InstancingPackage>();
 
-                InstancingPackage package = CreatePackage(block.instanceData, 
+                InstancingPackage package = CreatePackage(block.instanceData,
                     cache.mesh,
-                    materials, 
+                    materials,
                     i);
                 block.packageList[i].Add(package);
                 PreparePackageMaterial(package, cache, i);
@@ -162,7 +164,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
             block.runtimePackageIndex = new int[packageCount];
             return block;
         }
-        
+
         private static int GetPackageCount(VertexCache vertexCache)
         {
             var packageCount = 1;
@@ -173,34 +175,34 @@ namespace GBG.Rush.AniInstancing.Scripts {
             }
             return packageCount;
         }
-        
+
         public static InstancingPackage CreatePackage(InstanceData data, Mesh mesh, Material[] originalMaterial, int animationIndex)
         {
             var package = new InstancingPackage();
-            package.material     = new Material[mesh.subMeshCount];
+            package.material = new Material[mesh.subMeshCount];
             package.subMeshCount = mesh.subMeshCount;
-            package.size         = 1;
+            package.size = 1;
             for (var i = 0; i != mesh.subMeshCount; ++i)
             {
                 package.material[i] = new Material(originalMaterial[i]);
-                package.material[i].enableInstancing = true; 
+                package.material[i].enableInstancing = true;
                 package.material[i].EnableKeyword("INSTANCING_ON");
                 package.propertyBlock = new MaterialPropertyBlock();
                 package.material[i].EnableKeyword("USE_CONSTANT_BUFFER");
                 package.material[i].DisableKeyword("USE_COMPUTE_BUFFER");
             }
 
-            Matrix4x4[] mat                = new Matrix4x4[INSTANCING_SIZE_PER_PACKAGE];
-            float[]     frameIndex         = new float[INSTANCING_SIZE_PER_PACKAGE];
-            float[]     preFrameIndex      = new float[INSTANCING_SIZE_PER_PACKAGE];
-            float[]     transitionProgress = new float[INSTANCING_SIZE_PER_PACKAGE];
+            Matrix4x4[] mat = new Matrix4x4[INSTANCING_SIZE_PER_PACKAGE];
+            float[] frameIndex = new float[INSTANCING_SIZE_PER_PACKAGE];
+            float[] preFrameIndex = new float[INSTANCING_SIZE_PER_PACKAGE];
+            float[] transitionProgress = new float[INSTANCING_SIZE_PER_PACKAGE];
             data.worldMatrix[animationIndex].Add(mat);
             data.frameIndex[animationIndex].Add(frameIndex);
             data.preFrameIndex[animationIndex].Add(preFrameIndex);
             data.transitionProgress[animationIndex].Add(transitionProgress);
             return package;
         }
-        
+
         private static VertexCache CreateVertexCache(string prefabName, int renderName, int alias, Mesh mesh)
         {
             VertexCache vertexCache = new VertexCache();
@@ -355,10 +357,10 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 PreparePackageMaterial(package, vertexCache, i);
             }
         }
-        
+
         private static void SetupAdditionalData(VertexCache vertexCache)
         {
-            var colors = new Color[vertexCache.weight.Length];            
+            var colors = new Color[vertexCache.weight.Length];
             for (int i = 0; i != colors.Length; ++i)
             {
                 colors[i].r = vertexCache.weight[i].x;
@@ -381,7 +383,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
         {
             if (vertexCache.boneTextureIndex < 0)
                 return;
-                
+
             for (int i = 0; i != package.subMeshCount; ++i)
             {
                 AnimationTexture texture = animationTextureList[vertexCache.boneTextureIndex];
@@ -392,24 +394,24 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 package.material[i].SetInt("_boneTextureBlockHeight", texture.blockHeight);
             }
         }
-        
+
         private static InstanceData CreateInstanceData(int packageCount)
         {
             var data = new InstanceData();
-            data.worldMatrix        = new List<Matrix4x4[]>[packageCount];
-            data.frameIndex         = new List<float[]>[packageCount];
-            data.preFrameIndex      = new List<float[]>[packageCount];
+            data.worldMatrix = new List<Matrix4x4[]>[packageCount];
+            data.frameIndex = new List<float[]>[packageCount];
+            data.preFrameIndex = new List<float[]>[packageCount];
             data.transitionProgress = new List<float[]>[packageCount];
             for (int i = 0; i != packageCount; ++i)
             {
-                data.worldMatrix[i]        = new List<Matrix4x4[]>();
-                data.frameIndex[i]         = new List<float[]>();
-                data.preFrameIndex[i]      = new List<float[]>();
+                data.worldMatrix[i] = new List<Matrix4x4[]>();
+                data.frameIndex[i] = new List<float[]>();
+                data.preFrameIndex[i] = new List<float[]>();
                 data.transitionProgress[i] = new List<float[]>();
-            }   
-            return data;    
+            }
+            return data;
         }
-        
+
         private static int FindTexture_internal(string name)
         {
             for (int i = 0; i != animationTextureList.Count; ++i)

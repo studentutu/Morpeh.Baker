@@ -1,4 +1,5 @@
-namespace GBG.Rush.AniInstancing.Scripts {
+namespace GBG.Rush.AniInstancing.Scripts
+{
     using System;
     using System.Collections.Generic;
     using Morpeh;
@@ -8,7 +9,9 @@ namespace GBG.Rush.AniInstancing.Scripts {
     using Random = UnityEngine.Random;
 
     [Serializable]
-    public struct AnimationInstancingComponent : IComponent {
+    public struct AnimationInstancingComponent : IComponent
+    {
+        public bool isInitialized;
         public Matrix4x4 worldMatrix;
         public GameObject prototype;
         public TextAsset animationData;
@@ -20,7 +23,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
 
         public float speedParameter;
         public WrapMode wrapMode;
-        
+
         public int bonePerVertex;
         public float curFrame;
         public float preAniFrame;
@@ -28,26 +31,29 @@ namespace GBG.Rush.AniInstancing.Scripts {
         public int preAniIndex;
         public int aniTextureIndex;
         public float transitionDuration;
-        public bool  isInTransition;
+        public bool isInTransition;
         public float transitionTimer;
         public float transitionProgress;
-        
-        public  List<AnimationInfo> aniInfo;
-        private ComparerHash        comparer;
-        private AnimationInfo       searchInfo;
-        
+
+        public List<AnimationInfo> aniInfo;
+        private ComparerHash comparer;
+        private AnimationInfo searchInfo;
+
         public LodInfo[] lodInfo;
         public Transform[] allTransforms;
         internal GameObject go;
 
         public bool IsPause() => this.speedParameter == 0.0f;
-        public bool IsLoop()  => this.wrapMode == WrapMode.Loop;
+        public bool IsLoop() => this.wrapMode == WrapMode.Loop;
 
-        public void UpdateTransform(Matrix4x4 world) {
+        public void UpdateTransform(Matrix4x4 world)
+        {
             this.worldMatrix = world;
         }
 
-        public AnimationInstancingComponent(Matrix4x4 world, GameObject prototype, TextAsset animationData) : this() {
+        public AnimationInstancingComponent(Matrix4x4 world, GameObject prototype, TextAsset animationData) : this()
+        {
+            this.isInitialized = true;
             this.playSpeed = 1.0f;
             this.speedParameter = 1.0f;
             this.aniIndex = -1;
@@ -63,29 +69,30 @@ namespace GBG.Rush.AniInstancing.Scripts {
             this.prototype = prototype;
             this.layer = prototype.gameObject.layer;
             this.bonePerVertex = 2;
-            
+
             this.lodInfo = new LodInfo[1];
             var info = new LodInfo();
-            info.lodLevel            = 0;
+            info.lodLevel = 0;
             info.skinnedMeshRenderer = this.prototype.GetComponentsInChildren<SkinnedMeshRenderer>();
-            info.meshRenderer        = this.prototype.GetComponentsInChildren<MeshRenderer>();
-            info.meshFilter          = this.prototype.GetComponentsInChildren<MeshFilter>();
-            info.vertexCacheList     = new VertexCache[info.skinnedMeshRenderer.Length + info.meshRenderer.Length];
-            info.materialBlockList   = new MaterialBlock[info.vertexCacheList.Length];
+            info.meshRenderer = this.prototype.GetComponentsInChildren<MeshRenderer>();
+            info.meshFilter = this.prototype.GetComponentsInChildren<MeshFilter>();
+            info.vertexCacheList = new VertexCache[info.skinnedMeshRenderer.Length + info.meshRenderer.Length];
+            info.materialBlockList = new MaterialBlock[info.vertexCacheList.Length];
             this.lodInfo[0] = info;
 
             this.searchInfo = new AnimationInfo();
-            this.comparer   = new ComparerHash();
+            this.comparer = new ComparerHash();
             var animationInfo = AnimationInfoReader.FindAnimationInfo(prototype, this);
             this.aniInfo = animationInfo.listAniInfo;
             this.Prepare(this.aniInfo, animationInfo.extraBoneInfo);
         }
 
-        private void Prepare(List<AnimationInfo> infoList, ExtraBoneInfo extraBoneInfo) {
+        private void Prepare(List<AnimationInfo> infoList, ExtraBoneInfo extraBoneInfo)
+        {
             this.aniInfo = infoList;
 
             var bindPose = new List<Matrix4x4>(150);
-            
+
             // to optimize, MergeBone don't need to call every time
             var bones = RuntimeHelper.MergeBone(this.lodInfo[0].skinnedMeshRenderer, bindPose);
             this.allTransforms = bones;
@@ -93,7 +100,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
             if (extraBoneInfo != null)
             {
                 var list = new List<Transform>();
-                list.AddRange(bones);                
+                list.AddRange(bones);
                 var transforms = this.prototype.gameObject.GetComponentsInChildren<Transform>();
                 for (int i = 0; i != extraBoneInfo.extraBone.Length; ++i)
                 {
@@ -109,7 +116,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
 
                 this.allTransforms = list.ToArray();
             }
-            
+
             AnimationInstancingDataPool.AddMeshVertex(this.prototype.name, this.lodInfo, this.allTransforms,
                 bindPose, this.bonePerVertex);
 
@@ -118,21 +125,21 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 foreach (var cache in lod.vertexCacheList)
                 {
                     cache.shadowcastingMode = this.shadowCastingMode;
-                    cache.receiveShadow     = this.receiveShadow;
-                    cache.layer             = this.layer;
+                    cache.receiveShadow = this.receiveShadow;
+                    cache.layer = this.layer;
                 }
             }
 
             this.PlayAnimation(0);
         }
-        
+
         public void PlayAnimation(string name)
         {
-            var hash  = name.GetHashCode();
+            var hash = name.GetHashCode();
             var index = this.FindAnimationInfo(hash);
             this.PlayAnimation(index);
         }
-        
+
         public void UpdateAnimation()
         {
             if (this.aniInfo == null || this.IsPause())
@@ -156,35 +163,35 @@ namespace GBG.Rush.AniInstancing.Scripts {
             switch (this.wrapMode)
             {
                 case WrapMode.Loop:
-                {
-                    if (this.curFrame < 0f)
-                        this.curFrame += (totalFrame - 1);
-                    else if (this.curFrame > totalFrame - 1)
-                        this.curFrame -= (totalFrame - 1);
-                    break;
-                }
+                    {
+                        if (this.curFrame < 0f)
+                            this.curFrame += (totalFrame - 1);
+                        else if (this.curFrame > totalFrame - 1)
+                            this.curFrame -= (totalFrame - 1);
+                        break;
+                    }
                 case WrapMode.PingPong:
-                {
-                    if (this.curFrame < 0f)
                     {
-                        this.speedParameter = Mathf.Abs(this.speedParameter);
-                        this.curFrame = Mathf.Abs(this.curFrame);
+                        if (this.curFrame < 0f)
+                        {
+                            this.speedParameter = Mathf.Abs(this.speedParameter);
+                            this.curFrame = Mathf.Abs(this.curFrame);
+                        }
+                        else if (this.curFrame > totalFrame - 1)
+                        {
+                            this.speedParameter = -Mathf.Abs(this.speedParameter);
+                            this.curFrame = 2 * (totalFrame - 1) - this.curFrame;
+                        }
+                        break;
                     }
-                    else if (this.curFrame > totalFrame - 1)
-                    {
-                        this.speedParameter = -Mathf.Abs(this.speedParameter);
-                        this.curFrame = 2 * (totalFrame - 1) - this.curFrame;
-                    }
-                    break;
-                }
                 case WrapMode.Default:
                 case WrapMode.Once:
-                {
-                    if (this.curFrame < 0f || this.curFrame > totalFrame - 1.0f)
                     {
+                        if (this.curFrame < 0f || this.curFrame > totalFrame - 1.0f)
+                        {
+                        }
+                        break;
                     }
-                    break;
-                }
             }
 
             this.curFrame = Mathf.Clamp(this.curFrame, 0f, totalFrame - 1);
@@ -199,17 +206,17 @@ namespace GBG.Rush.AniInstancing.Scripts {
 
             this.transitionDuration = 0.0f;
             this.transitionProgress = 1.0f;
-            this.isInTransition     = false;
+            this.isInTransition = false;
 
             if (0 <= animationIndex && animationIndex < this.aniInfo.Count)
             {
-                this.preAniIndex     = this.aniIndex;
-                this.aniIndex        = animationIndex;
-                this.preAniFrame     = (float)(int)(curFrame + 0.5f);
-                this.curFrame        = Random.Range(0.0f, 60.0f);
+                this.preAniIndex = this.aniIndex;
+                this.aniIndex = animationIndex;
+                this.preAniFrame = (float)(int)(curFrame + 0.5f);
+                this.curFrame = Random.Range(0.0f, 60.0f);
                 this.aniTextureIndex = this.aniInfo[this.aniIndex].textureIndex;
-                this.wrapMode        = this.aniInfo[this.aniIndex].wrapMode;
-                this.speedParameter  = 1.0f;
+                this.wrapMode = this.aniInfo[this.aniIndex].wrapMode;
+                this.speedParameter = 1.0f;
             }
             else
             {
@@ -217,15 +224,15 @@ namespace GBG.Rush.AniInstancing.Scripts {
                 return;
             }
         }
-        
+
         private int FindAnimationInfo(int hash)
         {
             this.searchInfo.animationNameHash = hash;
             return this.aniInfo.BinarySearch(this.searchInfo, this.comparer);
         }
-        
+
         public int GetAnimationCount() => this.aniInfo?.Count ?? 0;
     }
-	   [Serializable]
-    public class AnimationInstancingProvider : MonoProvider<AnimationInstancingComponent> {}
+    [Serializable]
+    public class AnimationInstancingProvider : MonoProvider<AnimationInstancingComponent> { }
 }

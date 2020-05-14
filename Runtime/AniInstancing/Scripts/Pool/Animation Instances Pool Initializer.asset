@@ -17,4 +17,4 @@ MonoBehaviour:
     type: 3}
   prefabAnimation: {fileID: 776590785311526438, guid: 76ec6e31be513814782748d5d4a43801,
     type: 3}
-  animationData: {fileID: 4900000, guid: a75e77bddaddc6749baa2dc33cfaa4a7, type: 3}
+  animationData: {fileID: 4900000, guid: e91dc569cd767c34b8b0747aa94db8f5, type: 3}

@@ -1,35 +1,54 @@
-namespace GBG.Rush.AniInstancing.Scripts {
+namespace GBG.Rush.AniInstancing.Scripts
+{
     using GBG.Rush.Utils.Pool;
     using Morpeh;
     using UnityEngine;
     using UnityEngine.Profiling;
 
     [CreateAssetMenu(menuName = "ECS/Systems/Utils/" + nameof(AnimationInstancingProcessSystem))]
-    public sealed class AnimationInstancingProcessSystem : UpdateSystem {
+    public sealed class AnimationInstancingProcessSystem : UpdateSystem
+    {
 
         private Filter animationInstances;
-        
-        public override void OnAwake() {
-            this.animationInstances = this.World.Filter.With<AnimationInstancingComponent>().Without<DisabledInPool>().Without<StopAnimationMarker>();
+
+        public override void OnAwake()
+        {
+            this.animationInstances = this.World.Filter
+                                            .With<AnimationInstancingComponent>()
+                                            .Without<DisabledInPool>()
+                                            .Without<StopAnimationMarker>();
         }
 
-        public override void OnUpdate(float deltaTime) {
+        public override void OnUpdate(float deltaTime)
+        {
 #if UNITY_EDITOR
             //Debug.Log("Process: " + this.animationInstances.Length);
-            Profiler.BeginSample("AnimationInstancingProcessSystem");     
+            Profiler.BeginSample("AnimationInstancingProcessSystem");
 #endif
             this.ApplyBoneMatrix();
 
 #if UNITY_EDITOR
-            Profiler.EndSample();  
+            Profiler.EndSample();
 #endif
         }
-        
+
         private void ApplyBoneMatrix()
         {
-            foreach (var entity in this.animationInstances) {
+            foreach (var entity in this.animationInstances)
+            {
                 ref var instance = ref entity.GetComponent<AnimationInstancingComponent>();
-
+                if (!instance.isInitialized)
+                {
+                    ref var zombieComponent = ref entity.GetComponent<Zombies.Scripts.Zombie>();
+                    var transform = zombieComponent.root.transform;
+                    var newComponent = new AnimationInstancingComponent(
+                                    Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale),
+                                    instance.prototype,
+                                    instance.animationData);
+                    entity.RemoveComponent<AnimationInstancingComponent>();
+                    entity.SetComponent(newComponent);
+                    instance = ref entity.GetComponent<AnimationInstancingComponent>();
+                }
                 instance.UpdateAnimation();
 
                 var lod = instance.lodInfo[0];
@@ -41,7 +60,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
                     var block = lod.materialBlockList[j];
                     var packageIndex = block.runtimePackageIndex[aniTextureIndex];
                     var package = block.packageList[aniTextureIndex][packageIndex];
-                    
+
                     if (package.instancingCount + 1 > AnimationInstancingDataPool.INSTANCING_SIZE_PER_PACKAGE)
                     {
                         ++block.runtimePackageIndex[aniTextureIndex];
@@ -67,10 +86,10 @@ namespace GBG.Rush.AniInstancing.Scripts {
                         int index = block.runtimePackageIndex[aniTextureIndex];
                         InstancingPackage pkg = block.packageList[aniTextureIndex][index];
                         int count = pkg.instancingCount - 1;
-                        if (count >= 0) {
+                        if (count >= 0)
+                        {
                             ref Matrix4x4 worldMat = ref instance.worldMatrix;
                             Matrix4x4[] arrayMat = data.worldMatrix[aniTextureIndex][index];
-                            // убеем ненужное копирование так как вращаем только по y и scale  = 1
                             arrayMat[count].m00 = worldMat.m00;
                             //arrayMat[count].m01 = worldMat.m01;
                             arrayMat[count].m02 = worldMat.m02;
@@ -93,7 +112,7 @@ namespace GBG.Rush.AniInstancing.Scripts {
                             if (instance.preAniIndex >= 0)
                                 preFrameIndex = instance.aniInfo[instance.preAniIndex].animationIndex + instance.preAniFrame;
                             transition = instance.transitionProgress;
-                            
+
                             data.frameIndex[aniTextureIndex][index][count] = frameIndex;
                             data.preFrameIndex[aniTextureIndex][index][count] = preFrameIndex;
                             data.transitionProgress[aniTextureIndex][index][count] = transition;
