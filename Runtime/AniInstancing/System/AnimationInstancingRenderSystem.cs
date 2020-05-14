@@ -8,8 +8,10 @@ namespace GBG.Rush.AniInstancing.Scripts
     [CreateAssetMenu(menuName = "ECS/Systems/Utils/" + nameof(AnimationInstancingRenderSystem))]
     public sealed class AnimationInstancingRenderSystem : UpdateSystem
     {
+        private bool IsSupported = false;
         public override void OnAwake()
         {
+            IsSupported = SystemInfo.supportsInstancing;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -37,21 +39,37 @@ namespace GBG.Rush.AniInstancing.Scripts
                             for (int j = 0; j != package.subMeshCount; ++j)
                             {
                                 InstanceData data = block.Value.instanceData;
-                                // #if UNITY_EDITOR
-                                AnimationInstancingDataPool.PreparePackageMaterial(package, vertexCache, k);
-                                // #endif
-                                package.propertyBlock.SetFloatArray("frameIndex", data.frameIndex[k][i]);
-                                package.propertyBlock.SetFloatArray("preFrameIndex", data.preFrameIndex[k][i]);
-                                package.propertyBlock.SetFloatArray("transitionProgress", data.transitionProgress[k][i]);
-                                Graphics.DrawMeshInstanced(vertexCache.mesh,
-                                    j,
-                                    package.material[j],
-                                    data.worldMatrix[k][i],
-                                    package.instancingCount,
-                                    package.propertyBlock,
-                                    vertexCache.shadowcastingMode,
-                                    vertexCache.receiveShadow,
-                                    vertexCache.layer);
+
+                                if (IsSupported)
+                                {
+#if UNITY_EDITOR
+                                    AnimationInstancingDataPool.PreparePackageMaterial(package, vertexCache, k);
+#endif
+                                    package.propertyBlock.SetFloatArray("frameIndex", data.frameIndex[k][i]);
+                                    package.propertyBlock.SetFloatArray("preFrameIndex", data.preFrameIndex[k][i]);
+                                    package.propertyBlock.SetFloatArray("transitionProgress", data.transitionProgress[k][i]);
+                                    Graphics.DrawMeshInstanced(vertexCache.mesh,
+                                        j,
+                                        package.material[j],
+                                        data.worldMatrix[k][i],
+                                        package.instancingCount,
+                                        package.propertyBlock,
+                                        vertexCache.shadowcastingMode,
+                                        vertexCache.receiveShadow,
+                                        vertexCache.layer);
+                                }
+                                else
+                                {
+                                    package.material[j].SetFloat("frameIndex", data.frameIndex[k][i][0]);
+                                    package.material[j].SetFloat("preFrameIndex", data.preFrameIndex[k][i][0]);
+                                    package.material[j].SetFloat("transitionProgress", data.transitionProgress[k][i][0]);
+                                    Graphics.DrawMesh(vertexCache.mesh,
+                                        data.worldMatrix[k][i][0],
+                                        package.material[j],
+                                        0,
+                                        null,
+                                        j);
+                                }
 
                             }
 
