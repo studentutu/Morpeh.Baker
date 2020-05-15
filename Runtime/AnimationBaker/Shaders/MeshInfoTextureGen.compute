@@ -11,7 +11,7 @@ struct MeshInfo{
 // with cs.SetTexture
 RWTexture2D<float4> OutPosition;
 RWTexture2D<float4> OutNormal;
-// RWTexture2D<float4> OutTangent;
+RWTexture2D<float4> OutTangent;
 StructuredBuffer<MeshInfo> Info;
 int VertCount;
 
@@ -23,5 +23,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
 	OutPosition[id.xy] = float4(info.position, 1.0);
 	OutNormal[id.xy] = float4(info.normal, 1.0);
-	// OutTangent[id.xy] = float4(info.tangent, 1.0);
+	OutTangent[id.xy] = float4(info.tangent, 1.0);
 }

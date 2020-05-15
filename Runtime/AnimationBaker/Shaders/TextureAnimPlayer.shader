@@ -19,9 +19,9 @@
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma multi_compile ___ ANIM_LOOP
 
 			#include "UnityCG.cginc"
+			#include "TextureAnimatorPlayerNonInstanced.cginc"
 
 			struct appdata
 			{
@@ -35,28 +35,16 @@
 				float4 vertex : SV_POSITION;
 			};
 
-			sampler2D _MainTex, _PosTex, _NmlTex;
-			float4 _PosTex_TexelSize;
-			float _Length, _DT;
-
-			
+			sampler2D _MainTex;
 			
 			v2f vert (appdata v, uint vid : SV_VertexID)
 			{
-				float t = (_Time.y - _DT) / _Length;
-				#if ANIM_LOOP
-					t = fmod(t, 1.0);
-				#else
-					t = saturate(t);
-				#endif
-				float x = (vid + 0.5) * _PosTex_TexelSize.x;
-				float y = t;
-				float4 pos = tex2Dlod(_PosTex, float4(x, y, 0, 0));
-				float3 normal = tex2Dlod(_NmlTex, float4(x, y, 0, 0));
+				float3 normal;
+				float4 pos = TransFormVertex(vid, normal);
 
 				v2f o;
 				o.vertex = UnityObjectToClipPos(pos);
-				o.normal = UnityObjectToWorldNormal(normal);
+				o.normal = normal;
 				o.uv = v.uv;
 				return o;
 			}

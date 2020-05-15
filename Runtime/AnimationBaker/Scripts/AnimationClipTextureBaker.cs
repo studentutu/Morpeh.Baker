@@ -60,6 +60,7 @@ public class AnimationClipTextureBaker : MonoBehaviour
         var vCount = skin.sharedMesh.vertexCount;
         var texWidth = Mathf.NextPowerOfTwo(vCount);
         var mesh = new Mesh();
+        Vector3 originalPosition = gameObject.transform.position;
 
         foreach (var clip in clips)
         {
@@ -80,9 +81,9 @@ public class AnimationClipTextureBaker : MonoBehaviour
                 RenderTexture.active = rt;
                 GL.Clear(true, true, Color.clear);
             }
-
             for (var i = 0; i < frames; i++)
             {
+                // gameObject.transform.position = originalPosition;
                 clip.SampleAnimation(gameObject, dt * i);
                 skin.BakeMesh(mesh);
 
