@@ -22,6 +22,7 @@
 
 			#include "UnityCG.cginc"
 			#include "TextureAnimatorPlayerNonInstanced.cginc"
+			#pragma multi_compile ___ ANIM_LOOP
 
 			struct appdata
 			{
