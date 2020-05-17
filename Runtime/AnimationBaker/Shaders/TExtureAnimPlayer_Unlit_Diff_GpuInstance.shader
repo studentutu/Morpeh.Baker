@@ -27,6 +27,7 @@ Shader "Unlit/TExtureAnimPlayer_Unlit_Diff_GpuInstance"
 			#pragma multi_compile_instancing
 			#include "UnityCG.cginc"
 			#include "TextureAnimatorPlayerInstanced.cginc"
+			#pragma multi_compile ___ ANIM_LOOP
 			
 			#pragma target 3.0
 

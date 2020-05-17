@@ -10,7 +10,7 @@
         //     [Toggle(ANIM_LOOP)] _Loop("loop", Float) = 0
     // }
 
-    #pragma multi_compile ___ ANIM_LOOP
+    // #pragma multi_compile ___ ANIM_LOOP
 
     sampler2D  _PosTex, _NmlTex;
     float4 _PosTex_TexelSize;
