@@ -1,7 +1,8 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
 
-struct MeshInfo{
+struct MeshInfo
+{
 	float3 position;
 	float3 normal;
 	float3 tangent;

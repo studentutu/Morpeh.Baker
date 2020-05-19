@@ -1118,7 +1118,6 @@ namespace FSG.MeshAnimator
                         }
                         meshAnim.exposedTransforms = foundExposed.ToArray();
                         int bakeFrames = Mathf.CeilToInt(animClip.length * fps);
-                        int frame = 0;
                         List<MeshFrameData> verts = new List<MeshFrameData>();
                         List<Vector3> meshesInFrame = new List<Vector3>();
                         float lastFrameTime = 0;
@@ -1227,7 +1226,6 @@ namespace FSG.MeshAnimator
                             // debug only
                             // Instantiate(sampleGO, frame * Vector3.right, Quaternion.identity);
 
-                            frame++;
                         }
                         meshAnim.rootMotionMode = rootMotionMode;
                         meshAnim.smoothNormalsAngle = smoothMeshAngle;
