@@ -15,8 +15,6 @@ public class AnimationClipTextureBaker : MonoBehaviour
     public Shader playShader;
     public AnimationClip[] clipsToBake;
     [SerializeField] private bool ApplyRootMotion = false;
-    [SerializeField] private float FPS = 15;
-    private float deltaTIme = 0.05f;
     public struct VertInfo
     {
         public Vector3 position;
@@ -56,7 +54,6 @@ public class AnimationClipTextureBaker : MonoBehaviour
     {
 
         Animator animator = GetComponentInChildren<Animator>();
-        deltaTIme = 1 / FPS;
         if (animator != null)
         {
             animatorRootMeshFix();
@@ -182,7 +179,6 @@ public class AnimationClipTextureBaker : MonoBehaviour
         var skin = sampleGO.GetComponentInChildren<SkinnedMeshRenderer>();
         var vCount = skin.sharedMesh.vertexCount;
         var texWidth = Mathf.NextPowerOfTwo(vCount);
-        var mesh = new Mesh();
 
         var dictOnStateAndClips = FillDictionaryOfClipsAndStates(animator);
 
@@ -199,8 +195,7 @@ public class AnimationClipTextureBaker : MonoBehaviour
             {
                 continue;
             }
-            var frames = Mathf.NextPowerOfTwo((int)(clip.length / deltaTIme));
-
+            var frames = Mathf.NextPowerOfTwo((int)(clip.length / 0.05f));
             var infoList = new List<VertInfo>();
 
             var pRt = new RenderTexture(texWidth, frames, 0, RenderTextureFormat.ARGBHalf);
@@ -218,27 +213,14 @@ public class AnimationClipTextureBaker : MonoBehaviour
             }
 
             int bakeFrames = Mathf.CeilToInt(frames);
-            float lastFrameTime = 0;
             var dt = clip.length / frames;
-
-            for (int i = 0; i < frames; i += 1)
+            animator.Play(stateName, 0, 0);
+            for (int i = 0; i < frames; i++)
             {
                 float bakeDelta = Mathf.Clamp01(((float)i / frames));
                 EditorUtility.DisplayProgressBar("Baking Animation", string.Format("Processing: {0} Frame: {1}", stateName, i), bakeDelta);
                 float animationTime = bakeDelta * clip.length;
-
-                float normalizedTime = animationTime / clip.length;
-                animator.Play(stateName, 0, i / clip.length);
-                // if (lastFrameTime == 0)
-                // {
-                //     float nextBakeDelta = Mathf.Clamp01(((float)(i += 1) / bakeFrames));
-                //     float nextAnimationTime = nextBakeDelta * clip.length;
-                //     lastFrameTime = animationTime - nextAnimationTime;
-                // }
-                // animator.Update(animationTime - lastFrameTime);
-                // lastFrameTime = animationTime;
-                animator.Update(deltaTIme);
-
+                animator.Update(dt);
                 Mesh m = new Mesh();
                 skin.BakeMesh(m);
                 infoList.AddRange(
@@ -252,7 +234,7 @@ public class AnimationClipTextureBaker : MonoBehaviour
                 );
                 DestroyImmediate(m);
                 // debug only
-                Instantiate(sampleGO, i * Vector3.right, Quaternion.identity);
+                // Instantiate(sampleGO, i * Vector3.right, Quaternion.identity);
             }
 
 
