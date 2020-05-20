@@ -296,6 +296,7 @@ public class AnimationClipTextureBaker : MonoBehaviour
         GameObject.DestroyImmediate(sampleGO);
 #endif
     }
+#if UNITY_EDITOR
 
     private static Dictionary<string, AnimationClip> FillDictionaryOfClipsAndStates(Animator animator)
     {
@@ -325,4 +326,6 @@ public class AnimationClipTextureBaker : MonoBehaviour
 
         return AnimStateNames;
     }
+#endif
+
 }
