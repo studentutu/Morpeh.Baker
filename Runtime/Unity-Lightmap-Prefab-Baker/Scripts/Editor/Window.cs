@@ -333,7 +333,7 @@ namespace PrefabLightMapBaker
 
         #region Lightmaps Folder
 
-        public static string folder = "Assets/Resources/Lightmaps";
+        public static string folder = "Assets/PrefabBakedLight";
 
         string preview_folder = "";
         bool folder_is_valid = true;
