@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace PrefabLightMapBaker
 {
-    [ExecuteAlways]
     public class PrefabBaker : MonoBehaviour
     {
         [SerializeField] public LightInfo[] lights;
@@ -14,32 +14,62 @@ namespace PrefabLightMapBaker
         [SerializeField] public Texture2D[] texturesDir;
         [SerializeField] public Texture2D[] texturesShadow;
 
-        public Texture2D[][] AllTextures() => new Texture2D[][] {
+        [SerializeField]
+        private string nameOfOriginalPrefab = null;
+
+        public string GetLightMapHasCode()
+        {
+            if (string.IsNullOrEmpty(nameOfOriginalPrefab))
+            {
+                nameOfOriginalPrefab = UniqueHashCodeFromLightMaps();
+            }
+            return nameOfOriginalPrefab;
+        }
+
+        private string UniqueHashCodeFromLightMaps()
+        {
+            string hashCode = "";
+            foreach (var item in texturesColor)
+            {
+                hashCode += item.GetHashCode();
+            }
+            foreach (var item in texturesDir)
+            {
+                hashCode += item.GetHashCode();
+            }
+            foreach (var item in texturesShadow)
+            {
+                hashCode += item.GetHashCode();
+            }
+            return hashCode;
+        }
+
+        public Texture2D[][] AllTextures() => new Texture2D[][]
+        {
             texturesColor, texturesDir, texturesShadow
         };
 
-        public bool HasBakeData => (renderers?.Length ?? 0) > 0 && (texturesColor?.Length ?? 0) > 0;
+        public bool HasBakeData => (renderers?.Length ?? 0) > 0 && (
+                                                            (texturesColor?.Length ?? 0) > 0 ||
+                                                            (texturesDir?.Length ?? 0) > 0 ||
+                                                            (texturesShadow?.Length ?? 0) > 0
+                                                            );
 
         public bool BakeApplied
         {
             get
             {
-                bool hasColors = Utils.SceneHasAllLightmaps(texturesColor);
-                bool hasDirs = Utils.SceneHasAllLightmaps(texturesDir);
-                bool hasShadows = Utils.SceneHasAllLightmaps(texturesShadow);
+                bool hasColors = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesColor);
+                bool hasDirs = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesDir);
+                bool hasShadows = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesShadow);
 
                 return hasColors && hasDirs && hasShadows;
             }
         }
 
-        public bool BakeJustApplied { private set; get; } = false;
+        private bool BakeJustApplied { set; get; } = false;
 
-        void Awake()
-        {
-            BakeApply();
-        }
-
-        public void BakeApply()
+        public void BakeApply(bool addReference)
         {
             if (!HasBakeData)
             {
@@ -49,39 +79,48 @@ namespace PrefabLightMapBaker
 
             if (!BakeApplied)
             {
-                BakeJustApplied = Utils.Apply(this);
-
+                BakeJustApplied = RuntimeBakedLightmapUtils.AddInstance(this);
+#if UNITY_EDITOR
                 if (BakeJustApplied) Debug.Log("[PrefabBaker] Addeded prefab lightmap data to current scene");
+#endif
+            }
+
+            if (addReference)
+            {
+                RuntimeBakedLightmapUtils.AddInstanceRef(this);
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-            {
-                BakeApply();
-            }
-#endif
-
+            BakeApply(true);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            BakeApply();
+            BakeApply(false);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            if (RuntimeBakedLightmapUtils.RemoveInstance(this))
+            {
+                BakeJustApplied = false;
+            }
         }
 
-        public static System.Action onValidate;
-
-        private void OnValidate()
+#if UNITY_EDITOR
+        [ContextMenu("Update textures from Prefab")]
+        public void UpdateFromPrefab()
         {
-            onValidate?.Invoke();
+            var mainObjPath = UnityEditor.PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
+            var getPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<PrefabBaker>(mainObjPath);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(getPrefab), this);
+            nameOfOriginalPrefab = UniqueHashCodeFromLightMaps();
         }
+
+#endif
     }
 }

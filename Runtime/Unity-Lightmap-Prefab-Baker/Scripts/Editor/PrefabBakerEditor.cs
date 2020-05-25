@@ -11,11 +11,14 @@ namespace PrefabLightMapBaker
         public bool PreviewData = true;
 
         public bool EditComponents = false;
+        private PrefabBaker instance;
+        private void OnEnable()
+        {
+            instance = (PrefabBaker)target;
+        }
 
         public override void OnInspectorGUI()
         {
-            PrefabBaker instance = (PrefabBaker)target;
-
             GUILayout.Space(15);
 
             if (Window.instance == null)
@@ -38,7 +41,7 @@ namespace PrefabLightMapBaker
 
                     if (GUILayout.Button("Apply", GUILayout.Height(25)))
                     {
-                        instance.BakeApply();
+                        instance.BakeApply(false);
                     }
 
                     EditorGUI.EndDisabledGroup();
@@ -119,6 +122,8 @@ namespace PrefabLightMapBaker
             DrawTextures(instance.texturesColor, ref scroll_color);
             DrawTextures(instance.texturesDir, ref scroll_dir);
             DrawTextures(instance.texturesShadow, ref scroll_shadow);
+            // Apply changes to the serializedProperty - always do this at the end of OnInspectorGUI.
+            serializedObject.ApplyModifiedProperties();
         }
 
         [SerializeField] Vector2 scroll_color;
