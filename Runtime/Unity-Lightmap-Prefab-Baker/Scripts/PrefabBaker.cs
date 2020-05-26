@@ -1,90 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Dao.ConcurrentDictionaryLazy;
 
 namespace PrefabLightMapBaker
 {
 
-    public class PrefabBaker : MonoBehaviour
+    public partial class PrefabBaker : MonoBehaviour
     {
-        public class PrefabBakerManager : MonoBehaviour
-        {
-            private static Coroutine toRun = null;
-            private static PrefabBakerManager manager = null;
-            private static ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
-
-            public static void AddInstance(PrefabBaker instance)
-            {
-                if (!AddOrRemove.TryGetValue(instance, out _))
-                {
-                    AddOrRemove.TryAdd(instance, true);
-                }
-                AddOrRemove[instance] = true;
-                RunCoroutine();
-            }
-
-            public static void RemoveInstance(PrefabBaker instance)
-            {
-                if (!AddOrRemove.TryGetValue(instance, out _))
-                {
-                    AddOrRemove.TryAdd(instance, false);
-                }
-                AddOrRemove[instance] = false;
-                RunCoroutine();
-            }
-
-            private static void RunCoroutine()
-            {
-                if (manager == null)
-                {
-                    var go = new GameObject();
-                    manager = go.AddComponent<PrefabBakerManager>();
-                    go.isStatic = true;
-                    go.hideFlags = HideFlags.HideAndDontSave;
-                    GameObject.DontDestroyOnLoad(go);
-                }
-
-                if (toRun == null)
-                {
-                    toRun = manager.StartCoroutine(WorkingCoroutine());
-                }
-            }
-
-            private static IEnumerator WorkingCoroutine()
-            {
-                int count = 0;
-#if UNITY_EDITOR
-                UnityEngine.Profiling.Profiler.BeginSample("BakingApply");
-#endif
-                // Lazy loaded enumerated
-                foreach (var item in AddOrRemove)
-                {
-                    if (item.Key != null)
-                    {
-                        count++;
-                        if (item.Value)
-                        {
-                            item.Key.ActionOnEnable();
-                        }
-                        else
-                        {
-                            item.Key.ActionOnDisable();
-                        }
-                        if (count % 4 == 0)
-                        {
-                            yield return null;
-                        }
-                    }
-                }
-
-#if UNITY_EDITOR
-                UnityEngine.Profiling.Profiler.EndSample();
-#endif
-                toRun = null;
-            }
-        }
         public enum LightMapType
         {
             LightColor,
@@ -152,9 +74,16 @@ namespace PrefabLightMapBaker
             }
         }
 
-        private bool BakeJustApplied { set; get; } = false;
-
-        public void BakeApply(bool addReference)
+        private bool BakeJustApplied = false;
+        private bool refAdded = false;
+        public bool RefAdded
+        {
+            get
+            {
+                return refAdded;
+            }
+        }
+        public void BakeApply()
         {
             if (!HasBakeData)
             {
@@ -164,36 +93,61 @@ namespace PrefabLightMapBaker
 
             if (!BakeApplied)
             {
-                BakeJustApplied = RuntimeBakedLightmapUtils.AddInstance(this);
+                BakeJustApplied = RuntimeBakedLightmapUtils.InitializeInstance(this);
 #if UNITY_EDITOR
                 if (BakeJustApplied) Debug.Log("[PrefabBaker] Addeded prefab lightmap data to current scene");
+                if (!Application.isPlaying)
+                {
+                    RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
+                }
 #endif
             }
 
-            if (addReference)
+            if (!refAdded)
             {
                 RuntimeBakedLightmapUtils.AddInstanceRef(this);
+                refAdded = true;
             }
         }
 
         private void OnEnable()
         {
             // ActionOnEnable(); // uncomment to use textures right away
-            PrefabBakerManager.AddInstance(this);
+            PrefabBaker.PrefabBakerManager.AddInstance(this);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-
 
         private void OnDisable()
         {
             // ActionOnDisable(); // uncomment to use textures right away
-            PrefabBakerManager.RemoveInstance(this);
+            PrefabBaker.PrefabBakerManager.RemoveInstance(this);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
+        public void ReleaseShaders()
+        {
+            foreach (var item in renderers)
+            {
+                if (item != null)
+                {
+                    ReleaseMaterialShader(item.sharedMaterials);
+                }
+            }
+        }
+        // required on each instance
+        private static void ReleaseMaterialShader(Material[] materials)
+        {
+            foreach (var mat in materials)
+            {
+                if (mat == null) continue;
+                var shader = Shader.Find(mat.shader.name);
+                if (shader == null) continue;
+                mat.shader = shader;
+            }
+        }
         private void ActionOnEnable()
         {
-            BakeApply(true);
+            BakeApply();
         }
 
         private void ActionOnDisable()
@@ -202,11 +156,12 @@ namespace PrefabLightMapBaker
             {
                 BakeJustApplied = false;
             }
+            refAdded = false;
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            BakeApply(false);
+            BakeApply();
         }
 
 #if UNITY_EDITOR

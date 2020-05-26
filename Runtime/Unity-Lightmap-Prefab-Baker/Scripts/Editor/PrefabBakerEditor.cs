@@ -41,7 +41,7 @@ namespace PrefabLightMapBaker
 
                     if (GUILayout.Button("Apply", GUILayout.Height(25)))
                     {
-                        instance.BakeApply(false);
+                        instance.BakeApply();
                     }
 
                     EditorGUI.EndDisabledGroup();

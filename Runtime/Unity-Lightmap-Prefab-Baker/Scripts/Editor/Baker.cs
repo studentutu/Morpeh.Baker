@@ -101,7 +101,7 @@ namespace PrefabLightMapBaker
 
             // 7. Combine prefab lightmaps with scene lightmaps 
 
-            EditorUtils.GetAllPrefabs().ForEach(x => RuntimeBakedLightmapUtils.AddInstance(x));
+            EditorUtils.GetAllPrefabs().ForEach(x => RuntimeBakedLightmapUtils.InitializeInstance(x));
         }
 
         public static List<SceneLightmap> SceneLightmapList;
