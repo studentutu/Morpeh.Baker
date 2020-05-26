@@ -287,14 +287,11 @@ namespace PrefabLightMapBaker
                 var allLights = FindObjectsOfType<Light>();
                 prefab_baker_lights_count = allLights.Length;
             }
-            foreach (var go in scene.GetRootGameObjects())
+            var allObjects = FindObjectsOfType<PrefabBaker>();
+
+            foreach (var go in allObjects)
             {
-                if (!go.activeSelf) continue;
-
-                var baker = go.GetComponent<PrefabBaker>();
-
-                if (baker == null) continue;
-
+                if (!go.gameObject.activeInHierarchy) continue;
                 prefab_baker_count++;
             }
         }
