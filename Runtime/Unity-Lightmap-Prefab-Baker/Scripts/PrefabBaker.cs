@@ -71,6 +71,9 @@ namespace PrefabLightMapBaker
 
         public void BakeApply(bool addReference)
         {
+#if UNITY_EDITOR
+            UnityEngine.Profiling.Profiler.BeginSample("BakingApply");
+#endif
             if (!HasBakeData)
             {
                 BakeJustApplied = false;
@@ -89,6 +92,11 @@ namespace PrefabLightMapBaker
             {
                 RuntimeBakedLightmapUtils.AddInstanceRef(this);
             }
+
+#if UNITY_EDITOR
+            UnityEngine.Profiling.Profiler.EndSample();
+#endif
+
         }
 
         private void OnEnable()

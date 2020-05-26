@@ -99,7 +99,7 @@ namespace PrefabLightMapBaker
 
             lightmapArrayOffsetIndex = new int[max];
 
-            Stack<int> nullrefs = new Stack<int>(10);
+            Stack<int> emptySlots = new Stack<int>(10);
             for (int i = 0; i < max; i++)
             {
                 bool found = false;
@@ -108,7 +108,7 @@ namespace PrefabLightMapBaker
                     if (sceneLightmaps[j].lightmapColor == null && sceneLightmaps[j].lightmapDir == null &&
                         sceneLightmaps[j].shadowMask == null)
                     {
-                        nullrefs.Push(j);
+                        emptySlots.Push(j);
                         continue;
                     }
 
@@ -134,9 +134,9 @@ namespace PrefabLightMapBaker
 
                 if (!found)
                 {
-                    if (nullrefs.Count > 0)
+                    if (emptySlots.Count > 0)
                     {
-                        lightmapArrayOffsetIndex[i] = nullrefs.Pop();
+                        lightmapArrayOffsetIndex[i] = emptySlots.Pop();
                     }
                     else
                     {
@@ -208,12 +208,6 @@ namespace PrefabLightMapBaker
                 var item = lightmaps[i];
 
                 combined[idx] = item;
-                // new LightmapData
-                // {
-                //     lightmapColor = item.lightmapColor,
-                //     lightmapDir = item.lightmapDir,
-                //     shadowMask = item.shadowMask,
-                // };
             }
 
             LightmapSettings.lightmaps = combined;
