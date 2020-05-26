@@ -14,6 +14,7 @@ namespace PrefabLightMapBaker
             private static Coroutine toRun = null;
             private static PrefabBakerManager manager = null;
             private static ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
+
             public static void AddInstance(PrefabBaker instance)
             {
                 if (!AddOrRemove.TryGetValue(instance, out _))
@@ -60,18 +61,21 @@ namespace PrefabLightMapBaker
                 // Lazy loaded enumerated
                 foreach (var item in AddOrRemove)
                 {
-                    if (item.Value)
+                    if (item.Key != null)
                     {
                         count++;
-                        item.Key.ActionOnEnable();
-                    }
-                    else
-                    {
-                        item.Key.ActionOnDisable();
-                    }
-                    if (count % 3 == 0)
-                    {
-                        yield return null;
+                        if (item.Value)
+                        {
+                            item.Key.ActionOnEnable();
+                        }
+                        else
+                        {
+                            item.Key.ActionOnDisable();
+                        }
+                        if (count % 4 == 0)
+                        {
+                            yield return null;
+                        }
                     }
                 }
 

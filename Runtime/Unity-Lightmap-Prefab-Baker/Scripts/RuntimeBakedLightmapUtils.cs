@@ -13,7 +13,7 @@ namespace PrefabLightMapBaker
         }
 
         private static readonly Dictionary<string, LightMapPrefabStorage> prefabToLightmap = new Dictionary<string, LightMapPrefabStorage>();
-
+        private static List<LightmapData> added_lightmaps = new List<LightmapData>();
         public static void AddInstanceRef(PrefabBaker prefab)
         {
             var hashCode = prefab.GetLightMapHasCode();
@@ -47,6 +47,7 @@ namespace PrefabLightMapBaker
                 storage.referenceCount--;
                 if (storage.referenceCount <= 0)
                 {
+                    storage.referenceCount = 0;
                     fullyCleaned = true;
                     RemoveEmpty(prefab, storage);
                     prefabToLightmap.Remove(hashCode);
@@ -79,10 +80,15 @@ namespace PrefabLightMapBaker
                 }
             }
             LightmapSettings.lightmaps = sceneLightmaps;
+
             foreach (var renderer in prefab.renderers)
             {
-                ReleaseShaders(renderer.sharedMaterials);
+                if (renderer != null)
+                {
+                    ReleaseShaders(renderer.sharedMaterials);
+                }
             }
+
         }
 
         public static bool AddInstance(PrefabBaker prefab)
@@ -92,8 +98,7 @@ namespace PrefabLightMapBaker
             int[] lightmapArrayOffsetIndex;
 
             var sceneLightmaps = LightmapSettings.lightmaps;
-
-            var added_lightmaps = new List<LightmapData>();
+            added_lightmaps.Clear();
             int max = Mathf.Max(prefab.texturesColor.Length, prefab.texturesDir.Length);
             max = Mathf.Max(max, prefab.texturesShadow.Length);
 
