@@ -85,6 +85,12 @@ namespace PrefabLightMapBaker
                 toRun = null;
             }
         }
+        public enum LightMapType
+        {
+            LightColor,
+            LightDir,
+            LightShadow
+        }
         [SerializeField] public LightInfo[] lights;
         [SerializeField] public Renderer[] renderers;
         [SerializeField] public int[] renderersLightmapIndex;
@@ -96,7 +102,7 @@ namespace PrefabLightMapBaker
         [SerializeField]
         private string nameOfOriginalPrefab = null;
 
-        public string GetLightMapHasCode()
+        public string GetLightMapHashCode()
         {
             if (string.IsNullOrEmpty(nameOfOriginalPrefab))
             {
@@ -138,9 +144,9 @@ namespace PrefabLightMapBaker
         {
             get
             {
-                bool hasColors = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesColor);
-                bool hasDirs = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesDir);
-                bool hasShadows = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesShadow);
+                bool hasColors = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesColor, LightMapType.LightColor);
+                bool hasDirs = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesDir, LightMapType.LightDir);
+                bool hasShadows = RuntimeBakedLightmapUtils.SceneHasAllLightmaps(texturesShadow, LightMapType.LightShadow);
 
                 return hasColors && hasDirs && hasShadows;
             }
@@ -172,7 +178,7 @@ namespace PrefabLightMapBaker
 
         private void OnEnable()
         {
-            // ActionOnEnable();
+            // ActionOnEnable(); // uncomment to use textures right away
             PrefabBakerManager.AddInstance(this);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -180,7 +186,7 @@ namespace PrefabLightMapBaker
 
         private void OnDisable()
         {
-            // ActionOnDisable();
+            // ActionOnDisable(); // uncomment to use textures right away
             PrefabBakerManager.RemoveInstance(this);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }

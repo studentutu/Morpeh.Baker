@@ -12,11 +12,37 @@ namespace PrefabLightMapBaker
             public List<LightmapData> lightData = null;
         }
 
+        public class LightmapWithIndex
+        {
+            public LightmapData lightData = null;
+            public int index = -1;
+        }
+
         private static readonly Dictionary<string, LightMapPrefabStorage> prefabToLightmap = new Dictionary<string, LightMapPrefabStorage>();
         private static List<LightmapData> added_lightmaps = new List<LightmapData>();
+        private static List<LightmapWithIndex> changed_lightmaps = new List<LightmapWithIndex>();
+        private static Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>> switchCase = null;
+
+        private static Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>> SwitchCase
+        {
+            get
+            {
+                if (switchCase == null)
+                {
+                    switchCase = new Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>>()
+                    {
+                        {PrefabBaker.LightMapType.LightColor, IsInLightColor},
+                        {PrefabBaker.LightMapType.LightDir, IsInLightDir},
+                        {PrefabBaker.LightMapType.LightShadow, IsInLightShadows},
+                    };
+                }
+                return switchCase;
+            }
+        }
+
         public static void AddInstanceRef(PrefabBaker prefab)
         {
-            var hashCode = prefab.GetLightMapHasCode();
+            var hashCode = prefab.GetLightMapHashCode();
             if (!prefabToLightmap.TryGetValue(hashCode, out _))
             {
                 if (!AddInstance(prefab))
@@ -41,7 +67,7 @@ namespace PrefabLightMapBaker
         public static bool RemoveInstance(PrefabBaker prefab)
         {
             bool fullyCleaned = false;
-            string hashCode = prefab.GetLightMapHasCode();
+            string hashCode = prefab.GetLightMapHashCode();
             if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
             {
                 storage.referenceCount--;
@@ -98,7 +124,10 @@ namespace PrefabLightMapBaker
             int[] lightmapArrayOffsetIndex;
 
             var sceneLightmaps = LightmapSettings.lightmaps;
+
             added_lightmaps.Clear();
+            changed_lightmaps.Clear();
+
             int max = Mathf.Max(prefab.texturesColor.Length, prefab.texturesDir.Length);
             max = Mathf.Max(max, prefab.texturesShadow.Length);
 
@@ -139,15 +168,6 @@ namespace PrefabLightMapBaker
 
                 if (!found)
                 {
-                    if (emptySlots.Count > 0)
-                    {
-                        lightmapArrayOffsetIndex[i] = emptySlots.Pop();
-                    }
-                    else
-                    {
-                        lightmapArrayOffsetIndex[i] = added_lightmaps.Count + sceneLightmaps.Length;
-                    }
-
                     var newLightmapData = new LightmapData
                     {
                         lightmapColor = GetElement(prefab.texturesColor, i),
@@ -155,15 +175,28 @@ namespace PrefabLightMapBaker
                         shadowMask = GetElement(prefab.texturesShadow, i)
                     };
 
+                    if (emptySlots.Count > 0)
+                    {
+                        lightmapArrayOffsetIndex[i] = emptySlots.Pop();
+                        changed_lightmaps.Add(new LightmapWithIndex
+                        {
+                            lightData = newLightmapData,
+                            index = lightmapArrayOffsetIndex[i]
+                        });
+                    }
+                    else
+                    {
+                        lightmapArrayOffsetIndex[i] = added_lightmaps.Count + sceneLightmaps.Length;
+                        added_lightmaps.Add(newLightmapData);
+                    }
                     JoinOn(prefab, newLightmapData);
-                    added_lightmaps.Add(newLightmapData);
                 }
             }
 
             bool combined = false;
-            if (added_lightmaps.Count > 0)
+            if (added_lightmaps.Count > 0 || changed_lightmaps.Count > 0)
             {
-                CombineLightmaps(added_lightmaps);
+                CombineLightmaps(added_lightmaps, changed_lightmaps);
 
                 combined = true;
             }
@@ -175,7 +208,7 @@ namespace PrefabLightMapBaker
 
         private static void JoinOn(PrefabBaker prefab, LightmapData newData)
         {
-            string hashCode = prefab.GetLightMapHasCode();
+            string hashCode = prefab.GetLightMapHashCode();
 #if UNITY_EDITOR
             if (string.IsNullOrEmpty(hashCode))
             {
@@ -200,12 +233,16 @@ namespace PrefabLightMapBaker
             return array[index];
         }
 
-        private static void CombineLightmaps(List<LightmapData> lightmaps)
+        private static void CombineLightmaps(List<LightmapData> lightmaps, List<LightmapWithIndex> changed)
         {
             var original = LightmapSettings.lightmaps;
             var combined = new LightmapData[original.Length + lightmaps.Count];
 
             original.CopyTo(combined, 0);
+            foreach (var item in changed)
+            {
+                combined[item.index] = item.lightData;
+            }
 
             for (int i = 0; i < lightmaps.Count; i++)
             {
@@ -260,25 +297,46 @@ namespace PrefabLightMapBaker
             }
         }
 
-        public static bool SceneHasAllLightmaps(Texture2D[] textures)
+        public static bool SceneHasAllLightmaps(Texture2D[] textures, PrefabBaker.LightMapType typeLight)
         {
             if ((textures?.Length ?? 0) < 1) return true;
 
             else if ((LightmapSettings.lightmaps?.Length ?? 0) < 1) return false;
 
+            return SwitchCase[typeLight](textures);
+        }
+
+        private static bool IsInLightColor(Texture2D[] textures)
+        {
             foreach (var lmd in LightmapSettings.lightmaps)
             {
                 bool found = false;
 
                 if (textures.Contains(lmd.lightmapColor)) found = true;
-
-                else if (textures.Contains(lmd.lightmapDir)) found = true;
-
-                else if (textures.Contains(lmd.shadowMask)) found = true;
-
                 if (!found) return false;
             }
+            return true;
+        }
 
+        private static bool IsInLightDir(Texture2D[] textures)
+        {
+            foreach (var lmd in LightmapSettings.lightmaps)
+            {
+                bool found = false;
+                if (textures.Contains(lmd.lightmapDir)) found = true;
+                if (!found) return false;
+            }
+            return true;
+        }
+
+        private static bool IsInLightShadows(Texture2D[] textures)
+        {
+            foreach (var lmd in LightmapSettings.lightmaps)
+            {
+                bool found = false;
+                if (textures.Contains(lmd.shadowMask)) found = true;
+                if (!found) return false;
+            }
             return true;
         }
     }
