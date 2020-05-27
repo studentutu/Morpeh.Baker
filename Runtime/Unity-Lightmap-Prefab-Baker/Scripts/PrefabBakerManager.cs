@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Dao.ConcurrentDictionaryLazy;
 
@@ -8,9 +9,12 @@ namespace PrefabLightMapBaker
     {
         public class PrefabBakerManager : MonoBehaviour
         {
+            public const string PATH_TO_RESOURCE = "PrefabLightBaker";
+            private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
+            private static Dictionary<PrefabBaker, bool> copyHere = new Dictionary<PrefabBaker, bool>(100);
             private static Coroutine toRun = null;
-            private static ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
             private static PrefabBakerManager manager = null;
+            private static int COUNT_FRAMES = 5;
             public static PrefabBakerManager Manager
             {
                 get
@@ -22,6 +26,13 @@ namespace PrefabLightMapBaker
                         go.isStatic = true;
                         go.hideFlags = HideFlags.HideAndDontSave;
                         GameObject.DontDestroyOnLoad(go);
+                        var loadedResources = Resources.LoadAll<PrefabBakerManagerSettings>(PATH_TO_RESOURCE);
+                        foreach (var item in loadedResources)
+                        {
+                            COUNT_FRAMES = item.NumberOfLightMapSetPassesForSingleFrame;
+                            Resources.UnloadAsset(item);
+                        }
+
                     }
                     return manager;
                 }
@@ -57,13 +68,13 @@ namespace PrefabLightMapBaker
 
             private static IEnumerator WorkingCoroutine()
             {
-                int count = 0;
+                yield return null;
 #if UNITY_EDITOR
                 UnityEngine.Profiling.Profiler.BeginSample("BakingApply");
 #endif
                 // Lazy loaded enumerated
+                int count = 0;
                 int adding = 0;
-                bool changesMade = false;
                 RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
                 foreach (var item in AddOrRemove)
                 {
@@ -73,7 +84,6 @@ namespace PrefabLightMapBaker
                         {
                             if (!item.Key.RefAdded)
                             {
-                                changesMade = true;
                                 adding = 1;
                                 item.Key.ActionOnEnable();
                             }
@@ -82,26 +92,42 @@ namespace PrefabLightMapBaker
                         {
                             if (item.Key.RefAdded)
                             {
-                                changesMade = true;
                                 adding = 1;
                                 item.Key.ActionOnDisable();
                             }
                         }
-                        count += adding;
-                        if (count % 1000 == 0)
+                        if (RuntimeBakedLightmapUtils.IsLightMapsChanged)
                         {
-                            adding = 0;
-                            RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
-                            changesMade = false;
-                            yield return null;
-                            RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
+                            RuntimeBakedLightmapUtils.IsLightMapsChanged = false;
+                            count += adding;
+                            if (count % COUNT_FRAMES == 0)
+                            {
+                                adding = 0;
+                                RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
+                                yield return null;
+                                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
+                            }
                         }
                     }
                 }
-                if (changesMade)
+                if (count > 0)
                 {
                     RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
                 }
+                copyHere.Clear();
+                foreach (var item in AddOrRemove)
+                {
+                    if (item.Key != null)
+                    {
+                        copyHere.Add(item.Key, item.Value);
+                    }
+                }
+                AddOrRemove.Clear();
+                foreach (var item in copyHere)
+                {
+                    AddOrRemove.TryAdd(item.Key, item.Value);
+                }
+                copyHere.Clear();
 #if UNITY_EDITOR
                 UnityEngine.Profiling.Profiler.EndSample();
 #endif

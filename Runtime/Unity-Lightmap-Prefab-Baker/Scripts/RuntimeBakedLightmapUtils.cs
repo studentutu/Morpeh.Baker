@@ -25,6 +25,7 @@ namespace PrefabLightMapBaker
         private const int INITIAL_RESERVE_NUMBER_LIGHTMAPS = 10;
         private const int INITIAL_RESERVE_NUMBER_INSTANCES = 10;
 
+        public static bool IsLightMapsChanged { get; set; } = false;
         private static readonly List<LightmapData> added_lightmaps = new List<LightmapData>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
         private static readonly List<LightmapWithIndex> changed_lightmaps = new List<LightmapWithIndex>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
         private static readonly List<LightmapData> sceneLightData = new List<LightmapData>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
@@ -66,6 +67,7 @@ namespace PrefabLightMapBaker
 
         public static void UpdateUnityLightMaps()
         {
+            IsLightMapsChanged = false;
             LightmapSettings.lightmaps = CurrentFrameLightData.ToArray();
             foreach (var item in actionsToPerform)
             {
@@ -78,6 +80,7 @@ namespace PrefabLightMapBaker
 
         public static void ClearAndAddUnityLightMaps()
         {
+            IsLightMapsChanged = false;
             CurrentFrameLightData.Clear();
             actionsToPerform.Clear();
             CurrentFrameLightData.AddRange(LightmapSettings.lightmaps);
@@ -150,6 +153,7 @@ namespace PrefabLightMapBaker
                 }
             }
             actionsToPerform.Add(new ActionStruct { prefab = prefab, AddOrRemove = false });
+            IsLightMapsChanged = true;
         }
 
         public static bool InitializeInstance(PrefabBaker prefab)
@@ -218,6 +222,7 @@ namespace PrefabLightMapBaker
             bool combined = false;
             if (added_lightmaps.Count > 0 || changed_lightmaps.Count > 0)
             {
+                IsLightMapsChanged = true;
                 CombineLightmaps(added_lightmaps, changed_lightmaps);
                 combined = true;
             }
