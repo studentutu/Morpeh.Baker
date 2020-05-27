@@ -22,10 +22,16 @@ namespace PrefabLightMapBaker
             public PrefabBaker prefab;
             public bool AddOrRemove;
         }
-        private static readonly Dictionary<string, LightMapPrefabStorage> prefabToLightmap = new Dictionary<string, LightMapPrefabStorage>();
-        private static List<LightmapData> added_lightmaps = new List<LightmapData>();
-        private static List<LightmapWithIndex> changed_lightmaps = new List<LightmapWithIndex>();
+        private const int INITIAL_RESERVE_NUMBER_LIGHTMAPS = 10;
+        private const int INITIAL_RESERVE_NUMBER_INSTANCES = 10;
+
+        private static readonly List<LightmapData> added_lightmaps = new List<LightmapData>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
+        private static readonly List<LightmapWithIndex> changed_lightmaps = new List<LightmapWithIndex>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
+        private static readonly List<LightmapData> sceneLightData = new List<LightmapData>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
+        private static readonly Dictionary<int, LightMapPrefabStorage> prefabToLightmap = new Dictionary<int, LightMapPrefabStorage>();
+        private static readonly List<ActionStruct> actionsToPerform = new List<ActionStruct>(INITIAL_RESERVE_NUMBER_INSTANCES);
         private static Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>> switchCase = null;
+
         private static Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>> SwitchCase
         {
             get
@@ -42,8 +48,7 @@ namespace PrefabLightMapBaker
                 return switchCase;
             }
         }
-        private static List<LightmapData> sceneLightData = new List<LightmapData>(50);
-        private static List<ActionStruct> actionsToPerform = new List<ActionStruct>(50);
+
         private static List<LightmapData> CurrentFrameLightData
         {
             get
@@ -105,7 +110,7 @@ namespace PrefabLightMapBaker
         public static bool RemoveInstance(PrefabBaker prefab)
         {
             bool fullyCleaned = false;
-            string hashCode = prefab.GetLightMapHashCode();
+            var hashCode = prefab.GetLightMapHashCode();
             if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
             {
                 storage.referenceCount--;
@@ -224,13 +229,11 @@ namespace PrefabLightMapBaker
 
         private static void JoinOn(PrefabBaker prefab, LightmapData newData)
         {
-            string hashCode = prefab.GetLightMapHashCode();
-#if UNITY_EDITOR
-            if (string.IsNullOrEmpty(hashCode))
+            var hashCode = prefab.GetLightMapHashCode();
+            if (hashCode == 0)
             {
                 return;
             }
-#endif
             if (!prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
             {
                 storage = new LightMapPrefabStorage

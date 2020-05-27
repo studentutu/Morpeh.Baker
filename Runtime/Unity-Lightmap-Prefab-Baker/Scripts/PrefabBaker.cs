@@ -21,33 +21,39 @@ namespace PrefabLightMapBaker
         [SerializeField] public Texture2D[] texturesDir;
         [SerializeField] public Texture2D[] texturesShadow;
 
-        [SerializeField]
-        private string nameOfOriginalPrefab = null;
+        private int? lightMapId = null;
 
-        public string GetLightMapHashCode()
+        public int GetLightMapHashCode()
         {
-            if (string.IsNullOrEmpty(nameOfOriginalPrefab))
+            if (lightMapId == null)
             {
-                nameOfOriginalPrefab = UniqueHashCodeFromLightMaps();
+                lightMapId = UniqueHashCodeFromLightMaps();
             }
-            return nameOfOriginalPrefab;
+            return lightMapId.Value;
         }
 
-        private string UniqueHashCodeFromLightMaps()
+        private int UniqueHashCodeFromLightMaps()
         {
-            string hashCode = "";
+            int prime = 31;
+            int hashCode = 1;
+            int countMaps = texturesColor.Length + texturesDir.Length + texturesShadow.Length;
+            if (countMaps == 0)
+            {
+                return 0;
+            }
             foreach (var item in texturesColor)
             {
-                hashCode += item.GetHashCode();
+                hashCode = prime * hashCode + item.GetHashCode();
             }
             foreach (var item in texturesDir)
             {
-                hashCode += item.GetHashCode();
+                hashCode = prime * hashCode + item.GetHashCode();
             }
             foreach (var item in texturesShadow)
             {
-                hashCode += item.GetHashCode();
+                hashCode = prime * hashCode + item.GetHashCode();
             }
+            hashCode = prime * hashCode + (countMaps ^ (countMaps >> 32));
             return hashCode;
         }
 
@@ -75,14 +81,8 @@ namespace PrefabLightMapBaker
         }
 
         private bool BakeJustApplied = false;
-        private bool refAdded = false;
-        public bool RefAdded
-        {
-            get
-            {
-                return refAdded;
-            }
-        }
+
+        public bool RefAdded { get; private set; } = false;
         public void BakeApply()
         {
             if (!HasBakeData)
@@ -103,10 +103,10 @@ namespace PrefabLightMapBaker
 #endif
             }
 
-            if (!refAdded)
+            if (!RefAdded)
             {
                 RuntimeBakedLightmapUtils.AddInstanceRef(this);
-                refAdded = true;
+                RefAdded = true;
             }
         }
 
@@ -156,7 +156,7 @@ namespace PrefabLightMapBaker
             {
                 BakeJustApplied = false;
             }
-            refAdded = false;
+            RefAdded = false;
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -171,7 +171,7 @@ namespace PrefabLightMapBaker
             var mainObjPath = UnityEditor.PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
             var getPrefab = UnityEditor.AssetDatabase.LoadAssetAtPath<PrefabBaker>(mainObjPath);
             JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(getPrefab), this);
-            nameOfOriginalPrefab = UniqueHashCodeFromLightMaps();
+            lightMapId = UniqueHashCodeFromLightMaps();
         }
 #endif
     }
