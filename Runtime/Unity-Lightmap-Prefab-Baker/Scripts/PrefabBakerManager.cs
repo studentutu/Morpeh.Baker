@@ -11,10 +11,10 @@ namespace PrefabLightMapBaker
         {
             public const string PATH_TO_RESOURCE = "PrefabLightBaker";
             private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
-            private static Dictionary<PrefabBaker, bool> copyHere = new Dictionary<PrefabBaker, bool>(100);
             private static Coroutine toRun = null;
             private static PrefabBakerManager manager = null;
             private static int COUNT_FRAMES = 5;
+
             public static PrefabBakerManager Manager
             {
                 get
@@ -69,15 +69,13 @@ namespace PrefabLightMapBaker
             private static IEnumerator WorkingCoroutine()
             {
                 yield return null;
-#if UNITY_EDITOR
-                UnityEngine.Profiling.Profiler.BeginSample("BakingApply");
-#endif
                 // Lazy loaded enumerated
                 int count = 0;
-                int adding = 0;
+                int adding;
                 RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
                 foreach (var item in AddOrRemove)
                 {
+                    adding = 0;
                     if (item.Key != null)
                     {
                         if (item.Value)
@@ -114,23 +112,8 @@ namespace PrefabLightMapBaker
                 {
                     RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
                 }
-                copyHere.Clear();
-                foreach (var item in AddOrRemove)
-                {
-                    if (item.Key != null)
-                    {
-                        copyHere.Add(item.Key, item.Value);
-                    }
-                }
+                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps(false);
                 AddOrRemove.Clear();
-                foreach (var item in copyHere)
-                {
-                    AddOrRemove.TryAdd(item.Key, item.Value);
-                }
-                copyHere.Clear();
-#if UNITY_EDITOR
-                UnityEngine.Profiling.Profiler.EndSample();
-#endif
                 toRun = null;
             }
         }

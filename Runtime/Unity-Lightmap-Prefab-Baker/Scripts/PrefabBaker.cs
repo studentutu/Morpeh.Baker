@@ -102,17 +102,13 @@ namespace PrefabLightMapBaker
                 }
 #endif
             }
-
-            if (!RefAdded)
-            {
-                RuntimeBakedLightmapUtils.AddInstanceRef(this);
-                RefAdded = true;
-            }
         }
 
         private void OnEnable()
         {
             // ActionOnEnable(); // uncomment to use textures right away
+            RuntimeBakedLightmapUtils.AddInstanceRef(this);
+
             PrefabBaker.PrefabBakerManager.AddInstance(this);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -120,6 +116,7 @@ namespace PrefabLightMapBaker
         private void OnDisable()
         {
             // ActionOnDisable(); // uncomment to use textures right away
+
             PrefabBaker.PrefabBakerManager.RemoveInstance(this);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
