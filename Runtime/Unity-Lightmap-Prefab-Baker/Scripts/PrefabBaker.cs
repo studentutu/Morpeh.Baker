@@ -4,8 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace PrefabLightMapBaker
 {
-
-    public partial class PrefabBaker : MonoBehaviour
+    public class PrefabBaker : MonoBehaviour
     {
         public enum LightMapType
         {
@@ -81,7 +80,6 @@ namespace PrefabLightMapBaker
         }
 
         private bool BakeJustApplied = false;
-
         public bool RefAdded { get; private set; } = false;
         public void BakeApply()
         {
@@ -109,15 +107,17 @@ namespace PrefabLightMapBaker
             // ActionOnEnable(); // uncomment to use textures right away
             RuntimeBakedLightmapUtils.AddInstanceRef(this);
 
-            PrefabBaker.PrefabBakerManager.AddInstance(this);
+            PrefabBakerManager.AddInstance(this);
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnDisable()
         {
             // ActionOnDisable(); // uncomment to use textures right away
+            RuntimeBakedLightmapUtils.RemoveInstanceRef(this);
+            // RefAdded = false;
 
-            PrefabBaker.PrefabBakerManager.RemoveInstance(this);
+            PrefabBakerManager.RemoveInstance(this);
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
@@ -142,14 +142,16 @@ namespace PrefabLightMapBaker
                 mat.shader = shader;
             }
         }
-        private void ActionOnEnable()
+
+        public void ActionOnEnable()
         {
             BakeApply();
+            RefAdded = true;
         }
 
-        private void ActionOnDisable()
+        public void ActionOnDisable()
         {
-            if (RuntimeBakedLightmapUtils.RemoveInstance(this))
+            if (RuntimeBakedLightmapUtils.CheckInstance(this))
             {
                 BakeJustApplied = false;
             }

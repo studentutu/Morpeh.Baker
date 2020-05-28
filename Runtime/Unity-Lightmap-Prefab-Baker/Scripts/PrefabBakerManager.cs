@@ -5,117 +5,114 @@ using Dao.ConcurrentDictionaryLazy;
 
 namespace PrefabLightMapBaker
 {
-    public partial class PrefabBaker
+    public class PrefabBakerManager : MonoBehaviour
     {
-        public class PrefabBakerManager : MonoBehaviour
+        public const string PATH_TO_RESOURCE = "PrefabLightBaker";
+        private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
+        private static Coroutine toRun = null;
+        private static PrefabBakerManager manager = null;
+        private static int COUNT_FRAMES = 5;
+
+        public static PrefabBakerManager Manager
         {
-            public const string PATH_TO_RESOURCE = "PrefabLightBaker";
-            private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
-            private static Coroutine toRun = null;
-            private static PrefabBakerManager manager = null;
-            private static int COUNT_FRAMES = 5;
-
-            public static PrefabBakerManager Manager
+            get
             {
-                get
+                if (manager == null)
                 {
-                    if (manager == null)
+                    var go = new GameObject();
+                    manager = go.AddComponent<PrefabBakerManager>();
+                    go.isStatic = true;
+                    go.hideFlags = HideFlags.HideAndDontSave;
+                    GameObject.DontDestroyOnLoad(go);
+                    var loadedResources = Resources.LoadAll<PrefabBakerManagerSettings>(PATH_TO_RESOURCE);
+                    foreach (var item in loadedResources)
                     {
-                        var go = new GameObject();
-                        manager = go.AddComponent<PrefabBakerManager>();
-                        go.isStatic = true;
-                        go.hideFlags = HideFlags.HideAndDontSave;
-                        GameObject.DontDestroyOnLoad(go);
-                        var loadedResources = Resources.LoadAll<PrefabBakerManagerSettings>(PATH_TO_RESOURCE);
-                        foreach (var item in loadedResources)
-                        {
-                            COUNT_FRAMES = item.NumberOfLightMapSetPassesForSingleFrame;
-                            Resources.UnloadAsset(item);
-                        }
-
+                        COUNT_FRAMES = item.NumberOfLightMapSetPassesForSingleFrame;
+                        Resources.UnloadAsset(item);
                     }
-                    return manager;
-                }
-            }
 
-            public static void AddInstance(PrefabBaker instance)
-            {
-                if (!AddOrRemove.TryGetValue(instance, out _))
-                {
-                    AddOrRemove.TryAdd(instance, true);
                 }
-                AddOrRemove[instance] = true;
-                RunCoroutine();
+                return manager;
             }
+        }
 
-            public static void RemoveInstance(PrefabBaker instance)
+        public static void AddInstance(PrefabBaker instance)
+        {
+            if (!AddOrRemove.TryGetValue(instance, out _))
             {
-                if (!AddOrRemove.TryGetValue(instance, out _))
-                {
-                    AddOrRemove.TryAdd(instance, false);
-                }
-                AddOrRemove[instance] = false;
-                RunCoroutine();
+                AddOrRemove.TryAdd(instance, true);
             }
+            AddOrRemove[instance] = true;
+            RunCoroutine();
+        }
 
-            private static void RunCoroutine()
+        public static void RemoveInstance(PrefabBaker instance)
+        {
+            if (!AddOrRemove.TryGetValue(instance, out _))
             {
-                if (toRun == null)
-                {
-                    toRun = Manager.StartCoroutine(WorkingCoroutine());
-                }
+                AddOrRemove.TryAdd(instance, false);
             }
+            AddOrRemove[instance] = false;
+            RunCoroutine();
+        }
 
-            private static IEnumerator WorkingCoroutine()
+        private static void RunCoroutine()
+        {
+            if (toRun == null)
             {
-                yield return null;
-                // Lazy loaded enumerated
-                int count = 0;
-                int adding;
-                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
-                foreach (var item in AddOrRemove)
+                toRun = Manager.StartCoroutine(WorkingCoroutine());
+            }
+        }
+
+        private static IEnumerator WorkingCoroutine()
+        {
+            yield return null;
+            // Lazy loaded enumerated
+            int count = 0;
+            int adding;
+            RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
+            foreach (var item in AddOrRemove)
+            {
+                adding = 0;
+                if (item.Key != null)
                 {
-                    adding = 0;
-                    if (item.Key != null)
+                    if (item.Value)
                     {
-                        if (item.Value)
+                        if (!item.Key.RefAdded)
                         {
-                            if (!item.Key.RefAdded)
-                            {
-                                adding = 1;
-                                item.Key.ActionOnEnable();
-                            }
+                            adding = 1;
+                            item.Key.ActionOnEnable();
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (item.Key.RefAdded)
                         {
-                            if (item.Key.RefAdded)
-                            {
-                                adding = 1;
-                                item.Key.ActionOnDisable();
-                            }
+                            adding = 1;
+                            item.Key.ActionOnDisable();
                         }
-                        if (RuntimeBakedLightmapUtils.IsLightMapsChanged)
+                    }
+                    if (RuntimeBakedLightmapUtils.IsLightMapsChanged)
+                    {
+                        RuntimeBakedLightmapUtils.IsLightMapsChanged = false;
+                        count += adding;
+                        if (count % COUNT_FRAMES == 0)
                         {
-                            RuntimeBakedLightmapUtils.IsLightMapsChanged = false;
-                            count += adding;
-                            if (count % COUNT_FRAMES == 0)
-                            {
-                                adding = 0;
-                                RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
-                                yield return null;
-                                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
-                            }
+                            adding = 0;
+                            RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
+                            yield return null;
+                            RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
                         }
                     }
                 }
-                if (count > 0)
-                {
-                    RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
-                }
-                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps(false);
-                AddOrRemove.Clear();
-                toRun = null;
             }
+            if (count > 0)
+            {
+                RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
+            }
+            RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps(false);
+            AddOrRemove.Clear();
+            toRun = null;
         }
     }
 }

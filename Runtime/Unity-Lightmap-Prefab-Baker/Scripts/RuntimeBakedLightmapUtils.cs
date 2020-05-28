@@ -82,11 +82,11 @@ namespace PrefabLightMapBaker
         public static void ClearAndAddUnityLightMaps(bool copyLightMaps = true)
         {
             IsLightMapsChanged = false;
-            CurrentFrameLightData.Clear();
+            sceneLightData.Clear();
             actionsToPerform.Clear();
             if (copyLightMaps)
             {
-                CurrentFrameLightData.AddRange(LightmapSettings.lightmaps);
+                sceneLightData.AddRange(LightmapSettings.lightmaps);
             }
         }
 
@@ -114,13 +114,25 @@ namespace PrefabLightMapBaker
             prefabToLightmap[hashCode].referenceCount++;
         }
 
-        public static bool RemoveInstance(PrefabBaker prefab)
+        public static void RemoveInstanceRef(PrefabBaker prefab)
+        {
+            var hashCode = prefab.GetLightMapHashCode();
+            if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
+            {
+                storage.referenceCount--;
+                if (storage.referenceCount <= 0)
+                {
+                    storage.referenceCount = 0;
+                }
+            }
+        }
+
+        public static bool CheckInstance(PrefabBaker prefab)
         {
             bool fullyCleaned = false;
             var hashCode = prefab.GetLightMapHashCode();
             if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
             {
-                storage.referenceCount--;
                 if (storage.referenceCount <= 0)
                 {
                     storage.referenceCount = 0;
