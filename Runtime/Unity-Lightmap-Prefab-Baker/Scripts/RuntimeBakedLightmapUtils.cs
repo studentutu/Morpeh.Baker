@@ -143,6 +143,21 @@ namespace PrefabLightMapBaker
             }
             return fullyCleaned;
         }
+        public static bool CheckInstance(int hashCode)
+        {
+            bool fullyCleaned = false;
+            if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
+            {
+                if (storage.referenceCount <= 0)
+                {
+                    storage.referenceCount = 0;
+                    fullyCleaned = true;
+                    RemoveEmpty(null, storage);
+                    prefabToLightmap.Remove(hashCode);
+                }
+            }
+            return fullyCleaned;
+        }
 
         private static int GetHashCodeCustom(LightmapData objectToGetCode)
         {
@@ -168,7 +183,10 @@ namespace PrefabLightMapBaker
                     }
                 }
             }
-            actionsToPerform.Add(new ActionStruct { prefab = prefab, AddOrRemove = false });
+            if (prefab != null)
+            {
+                actionsToPerform.Add(new ActionStruct { prefab = prefab, AddOrRemove = false });
+            }
             IsLightMapsChanged = true;
         }
 

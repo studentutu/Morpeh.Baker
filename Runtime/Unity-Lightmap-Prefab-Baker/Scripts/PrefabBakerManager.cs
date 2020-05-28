@@ -9,6 +9,8 @@ namespace PrefabLightMapBaker
     {
         public const string PATH_TO_RESOURCE = "PrefabLightBaker";
         private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
+        private static readonly ConcurrentDictionaryLazy<int, string> AddOrRemoveToCheck = new ConcurrentDictionaryLazy<int, string>(50);
+
         private static Coroutine toRun = null;
         private static PrefabBakerManager manager = null;
         private static int COUNT_FRAMES = 5;
@@ -53,6 +55,11 @@ namespace PrefabLightMapBaker
                 AddOrRemove.TryAdd(instance, false);
             }
             AddOrRemove[instance] = false;
+            var lightMapHasCode = instance.GetLightMapHashCode();
+            if (!AddOrRemoveToCheck.TryGetValue(lightMapHasCode, out _))
+            {
+                AddOrRemoveToCheck.TryAdd(lightMapHasCode, instance.name);
+            }
             RunCoroutine();
         }
 
@@ -102,6 +109,31 @@ namespace PrefabLightMapBaker
                             RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
                             yield return null;
                             RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var lightmapCheckRemove in AddOrRemoveToCheck)
+                    {
+                        adding = 0;
+                        if (RuntimeBakedLightmapUtils.CheckInstance(lightmapCheckRemove.Key))
+                        {
+                            adding = 1;
+                            // Debug.LogWarning(" Removing Prefab lightMap " + lightmapCheckRemove.Value);
+                        }
+                        count += adding;
+                        if (RuntimeBakedLightmapUtils.IsLightMapsChanged)
+                        {
+                            RuntimeBakedLightmapUtils.IsLightMapsChanged = false;
+                            count += adding;
+                            if (count % COUNT_FRAMES == 0)
+                            {
+                                adding = 0;
+                                RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
+                                yield return null;
+                                RuntimeBakedLightmapUtils.ClearAndAddUnityLightMaps();
+                            }
                         }
                     }
                 }

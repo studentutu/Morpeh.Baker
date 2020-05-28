@@ -93,7 +93,7 @@ namespace PrefabLightMapBaker
             {
                 BakeJustApplied = RuntimeBakedLightmapUtils.InitializeInstance(this);
 #if UNITY_EDITOR
-                if (BakeJustApplied) Debug.Log("[PrefabBaker] Addeded prefab lightmap data to current scene");
+                // if (BakeJustApplied) Debug.LogWarning("[PrefabBaker] Addeded prefab lightmap data to current scene " + name);
                 if (!Application.isPlaying)
                 {
                     RuntimeBakedLightmapUtils.UpdateUnityLightMaps();
@@ -154,6 +154,7 @@ namespace PrefabLightMapBaker
             if (RuntimeBakedLightmapUtils.CheckInstance(this))
             {
                 BakeJustApplied = false;
+                // Debug.LogWarning(" Removing Prefab lightMap " + name);
             }
             RefAdded = false;
         }
