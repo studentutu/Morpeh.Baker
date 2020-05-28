@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,40 +21,33 @@ namespace PrefabLightMapBaker
         [SerializeField] public Texture2D[] texturesDir;
         [SerializeField] public Texture2D[] texturesShadow;
 
-        private int? lightMapId = null;
+        private string lightMapId = null;
 
-        public int GetLightMapHashCode()
+        public string GetLightMapHashCode()
         {
             if (lightMapId == null)
             {
                 lightMapId = UniqueHashCodeFromLightMaps();
             }
-            return lightMapId.Value;
+            return lightMapId;
         }
 
-        private int UniqueHashCodeFromLightMaps()
+        private string UniqueHashCodeFromLightMaps()
         {
-            int prime = 31;
-            int hashCode = 1;
-            int countMaps = texturesColor.Length + texturesDir.Length + texturesShadow.Length;
-            if (countMaps == 0)
-            {
-                return 0;
-            }
+            StringBuilder sb = new StringBuilder(50);
             foreach (var item in texturesColor)
             {
-                hashCode = prime * hashCode + item.GetHashCode();
+                sb.Append(item.GetHashCode());
             }
             foreach (var item in texturesDir)
             {
-                hashCode = prime * hashCode + item.GetHashCode();
+                sb.Append(item.GetHashCode());
             }
             foreach (var item in texturesShadow)
             {
-                hashCode = prime * hashCode + item.GetHashCode();
+                sb.Append(item.GetHashCode());
             }
-            hashCode = prime * hashCode + (countMaps ^ (countMaps >> 32));
-            return hashCode;
+            return sb.ToString();
         }
 
         public Texture2D[][] AllTextures() => new Texture2D[][]
@@ -131,13 +125,15 @@ namespace PrefabLightMapBaker
                 }
             }
         }
-        // required on each instance
+
+        // required once for each lightmap
         private static void ReleaseMaterialShader(Material[] materials)
         {
+            Shader shader = null;
             foreach (var mat in materials)
             {
                 if (mat == null) continue;
-                var shader = Shader.Find(mat.shader.name);
+                shader = Shader.Find(mat.shader.name);
                 if (shader == null) continue;
                 mat.shader = shader;
             }

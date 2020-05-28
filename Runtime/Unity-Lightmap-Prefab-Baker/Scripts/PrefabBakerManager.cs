@@ -9,7 +9,7 @@ namespace PrefabLightMapBaker
     {
         public const string PATH_TO_RESOURCE = "PrefabLightBaker";
         private static readonly ConcurrentDictionaryLazy<PrefabBaker, bool> AddOrRemove = new ConcurrentDictionaryLazy<PrefabBaker, bool>(50);
-        private static readonly ConcurrentDictionaryLazy<int, string> AddOrRemoveToCheck = new ConcurrentDictionaryLazy<int, string>(50);
+        private static readonly ConcurrentDictionaryLazy<string, string> AddOrRemoveToCheck = new ConcurrentDictionaryLazy<string, string>(50);
 
         private static Coroutine toRun = null;
         private static PrefabBakerManager manager = null;

@@ -30,7 +30,7 @@ namespace PrefabLightMapBaker
         private static readonly List<LightmapWithIndex> changed_lightmaps = new List<LightmapWithIndex>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
         private static readonly List<LightmapData> sceneLightData = new List<LightmapData>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
         private static readonly Dictionary<int, bool> emptySlots = new Dictionary<int, bool>(INITIAL_RESERVE_NUMBER_LIGHTMAPS);
-        private static readonly Dictionary<int, LightMapPrefabStorage> prefabToLightmap = new Dictionary<int, LightMapPrefabStorage>();
+        private static readonly Dictionary<string, LightMapPrefabStorage> prefabToLightmap = new Dictionary<string, LightMapPrefabStorage>();
         private static readonly List<ActionStruct> actionsToPerform = new List<ActionStruct>(INITIAL_RESERVE_NUMBER_INSTANCES);
         private static Dictionary<PrefabBaker.LightMapType, System.Func<Texture2D[], bool>> switchCase = null;
 
@@ -77,6 +77,7 @@ namespace PrefabLightMapBaker
                     item.prefab.ReleaseShaders();
                 }
             }
+            actionsToPerform.Clear();
         }
 
         public static void ClearAndAddUnityLightMaps(bool copyLightMaps = true)
@@ -143,7 +144,7 @@ namespace PrefabLightMapBaker
             }
             return fullyCleaned;
         }
-        public static bool CheckInstance(int hashCode)
+        public static bool CheckInstance(string hashCode)
         {
             bool fullyCleaned = false;
             if (prefabToLightmap.TryGetValue(hashCode, out LightMapPrefabStorage storage))
@@ -279,7 +280,7 @@ namespace PrefabLightMapBaker
         private static void JoinOn(PrefabBaker prefab, LightmapData newData)
         {
             var hashCode = prefab.GetLightMapHashCode();
-            if (hashCode == 0)
+            if (string.IsNullOrEmpty(hashCode))
             {
                 return;
             }
@@ -346,7 +347,14 @@ namespace PrefabLightMapBaker
 
             actionsToPerform.Add(new ActionStruct { prefab = prefab, AddOrRemove = true });
 
+
             ChangeLightBaking(prefab.lights);
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UpdateUnityLightMaps();
+            }
+#endif
         }
 
         private static void ChangeLightBaking(LightInfo[] lightsInfo)
