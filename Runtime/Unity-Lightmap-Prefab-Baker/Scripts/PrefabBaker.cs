@@ -94,6 +94,11 @@ namespace PrefabLightMapBaker
                 }
 #endif
             }
+
+            for (var i = 0; i < renderers.Length; ++i)
+            {
+                renderers[i].lightmapScaleOffset = renderersLightmapOffsetScale[i];
+            }
         }
 
         private void OnEnable()
