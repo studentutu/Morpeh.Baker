@@ -19,7 +19,7 @@
     // v2f vert (appdata v, uint vid : SV_VertexID)
     
     // In vertex Shader!
-    float4 TransFormVertex( uint vid : SV_VertexID, out float3 normal)
+    float4 TransFormVertex( uint vid: SV_VertexID , out float3 normal)
     {
         float t = (_Time.y - _DT) / _Length;
         #if ANIM_LOOP
