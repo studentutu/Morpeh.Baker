@@ -36,6 +36,8 @@ Shader "Unlit/TExtureAnimPlayer_Unlit_Diff_GpuInstance"
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
+				float2 uv1 : TEXCOORD1;
+				float2 uv2 : TEXCOORD2;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -51,14 +53,15 @@ Shader "Unlit/TExtureAnimPlayer_Unlit_Diff_GpuInstance"
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
 
-			v2f vert (appdata v, uint vid : SV_VertexID)
+			v2f vert (appdata v)
 			{
 				v2f o;
 
 				UNITY_SETUP_INSTANCE_ID(v);
 				// UNITY_TRANSFER_INSTANCE_ID(v, o);
 				float3 normal;
-				float4 newVertexPos = TransFormVertex(vid, normal);
+				int vertexID = v.uv2[0];
+				float4 newVertexPos = TransFormVertex(vertexID, normal);
 				o.vertex =  UnityObjectToClipPos(newVertexPos);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				o.normal = normal;

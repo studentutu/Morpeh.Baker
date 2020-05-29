@@ -91,9 +91,7 @@ public class SimpleLitURPShaderGui : BaseShaderGUI
         materialEditor.ShaderProperty(_DTProp, "Delta Time", 1);
         materialEditor.ShaderProperty(_LengthProp, "Length", 1);
         materialEditor.ShaderProperty(_LoopProp, "Loop", 1);
-        // if()
 
-        // CoreUtils.SetKeyword(material, "_ANIM_LOOP", _LoopProp.floatValue == 1);
         if (_LoopProp.floatValue > 0)
         {
             material.EnableKeyword("_ANIM_LOOP");
